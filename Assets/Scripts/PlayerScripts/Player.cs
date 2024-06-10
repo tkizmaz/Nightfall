@@ -19,7 +19,8 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        this.gameObject.AddComponent<Health>();
-        this.gameObject.AddComponent<Mana>();
+        health = this.gameObject.AddComponent<Health>();
+        mana = this.gameObject.AddComponent<Mana>();
+        Debug.Log(health.StatValue);
     }
 }
