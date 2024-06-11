@@ -14,7 +14,6 @@ public class PlayerMovement : MonoBehaviour
     public float groundDistance = 0.4f;
     public LayerMask groundMask;
     bool isGrounded;
-    // Update is called once per frame
     void Update()
     {
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
@@ -29,11 +28,24 @@ public class PlayerMovement : MonoBehaviour
         Vector3 move = transform.right * x + transform.forward * z;
         controller.Move(move * speed * Time.deltaTime);
 
+        CheckJump();
+        CheckSprint();
+        CheckCrouch();
+        velocity.y += (Physics.gravity.y * 1.5f) * Time.deltaTime;
+        controller.Move(velocity * Time.deltaTime);
+
+    }
+
+    private void CheckJump()
+    {
         if(Input.GetButtonDown("Jump") && isGrounded)
         {
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * Physics.gravity.y);
         }
+    }
 
+    private void CheckSprint()
+    {
         if(Input.GetKeyDown(KeyCode.LeftShift))
         {
             speed = sprintSpeed;
@@ -43,7 +55,10 @@ public class PlayerMovement : MonoBehaviour
         {
             speed = 12f;
         }
+    }
 
+    private void CheckCrouch()
+    {
         if(Input.GetKeyDown(KeyCode.LeftControl))
         {
             speed = crouchSpeed;
@@ -53,10 +68,5 @@ public class PlayerMovement : MonoBehaviour
         {
             speed = 12f;
         }
-
-        velocity.y += (Physics.gravity.y * 1.5f) * Time.deltaTime;
-        controller.Move(velocity * Time.deltaTime);
-
-        Debug.Log(speed);
     }
 }
