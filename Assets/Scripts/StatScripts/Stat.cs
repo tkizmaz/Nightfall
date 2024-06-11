@@ -19,7 +19,7 @@ public class Stat : MonoBehaviour
         }
     }
 
-    void Start()
+    void Awake()
     {
         statValue = 100;
     }
