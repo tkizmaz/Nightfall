@@ -9,6 +9,12 @@ public class PlayerMovement : MonoBehaviour
     public float jumpHeight = 3f;
     public float crouchSpeed = 4f;
     public float sprintSpeed = 20f;
+    private float initialZRotation;
+    private float initialYRotation;
+    private bool isPeeking = false;
+    private bool isPeekingLeft = false;
+    private bool isPeekingRight = false;
+
     Vector3 velocity;
     public Transform groundCheck;
     public float groundDistance = 0.4f;
@@ -31,6 +37,7 @@ public class PlayerMovement : MonoBehaviour
         CheckJump();
         CheckSprint();
         CheckCrouch();
+        CheckPeek();
         velocity.y += (Physics.gravity.y * 1.5f) * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
 
@@ -69,4 +76,48 @@ public class PlayerMovement : MonoBehaviour
             speed = 12f;
         }
     }
+
+    private void CheckPeek()
+{
+    if (Input.GetKeyDown(KeyCode.Q))
+    {
+        if (!isPeekingLeft)
+        {
+            initialZRotation = transform.rotation.eulerAngles.z;
+            initialYRotation = transform.rotation.eulerAngles.y;
+            transform.Rotate(0, 0, 10f);
+            isPeekingLeft = true;
+            isPeekingRight = false;
+        }
+    }
+    else if (Input.GetKeyUp(KeyCode.Q))
+    {
+        if (isPeekingLeft)
+        {
+            transform.rotation = Quaternion.Euler(0, initialYRotation, initialZRotation);
+            isPeekingLeft = false;
+        }
+    }
+
+    if (Input.GetKeyDown(KeyCode.E))
+    {
+        if (!isPeekingRight)
+        {
+            initialZRotation = transform.rotation.eulerAngles.z;
+            initialYRotation = transform.rotation.eulerAngles.y;
+            transform.Rotate(0, 0, -10f);
+            isPeekingRight = true;
+            isPeekingLeft = false;
+        }
+    }
+    else if (Input.GetKeyUp(KeyCode.E))
+    {
+        if (isPeekingRight)
+        {
+            Debug.Log("Peek bırakıldı");
+            transform.rotation = Quaternion.Euler(0, initialYRotation, initialZRotation);
+            isPeekingRight = false;
+        }
+    }
+}
 }
