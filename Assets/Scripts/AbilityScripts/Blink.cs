@@ -26,12 +26,11 @@ public class Blink : Ability
     private void Update()
     {
         PerformAbility();
-        CheckInterrupt();
     }
 
     protected override void PerformAbility()
     {
-        if(isReadyToPerform && !isInterrupted)
+        if(isReadyToPerform)
         {
             if(Input.GetMouseButton(1))
             {
@@ -54,7 +53,7 @@ public class Blink : Ability
             blinkParticle.Play();
         }
 
-        else if(Input.GetMouseButtonUp(1) && !isInterrupted)
+        else if(Input.GetMouseButtonUp(1))
         {
             base.PerformAbility();
             CharacterController cc = this.gameObject.GetComponent<CharacterController>();
