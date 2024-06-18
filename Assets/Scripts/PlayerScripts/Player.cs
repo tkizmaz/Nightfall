@@ -6,6 +6,7 @@ public class Player : MonoBehaviour
 {
     private Health health;
     private Mana mana;
+    Blink blink;
 
     public Health Health
     {
@@ -23,5 +24,6 @@ public class Player : MonoBehaviour
     {
         health = this.gameObject.AddComponent<Health>();
         mana = this.gameObject.AddComponent<Mana>();
+        blink = this.gameObject.GetComponent<Blink>();
     }
 }
