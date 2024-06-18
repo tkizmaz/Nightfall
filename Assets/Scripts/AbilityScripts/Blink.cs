@@ -15,7 +15,7 @@ public class Blink : Ability
     [SerializeField]
     private ParticleSystem blinkParticle;
     private Vector3 blinkDestination;
-
+    private bool isInterrupted = false;
     private void Awake() 
     {
         blinkParticle.Stop();
@@ -26,41 +26,35 @@ public class Blink : Ability
     private void Update()
     {
         PerformAbility();
+        CheckInterrupt();
     }
 
     protected override void PerformAbility()
     {
-        Debug.Log(isReadyToPerform);
-        if(isReadyToPerform)
+        if(isReadyToPerform && !isInterrupted)
         {
             if(Input.GetMouseButton(1))
-        {
+            {
             RaycastHit hit;
             if(Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, maxDistance))
             {
                 Vector3 nearestPoint = hit.point - fpsCam.transform.forward * offsetDistance;
                 Debug.DrawRay(fpsCam.transform.position, fpsCam.transform.forward * hit.distance, Color.black);
 
-                if(nearestPoint.y < 0.5f)
-                {
-                    nearestPoint.y = 0.5f;
-                }
+                nearestPoint.y = CheckGround(nearestPoint.y);
                 blinkDestination = nearestPoint;
             }
             else
             {
                 Debug.DrawRay(fpsCam.transform.position, fpsCam.transform.forward * maxDistance, Color.black);
                 blinkDestination = fpsCam.transform.position + fpsCam.transform.forward * maxDistance;
-                if(blinkDestination.y < 0.5f)
-                {
-                    blinkDestination.y = 0.5f;
-                }
+                blinkDestination.y = CheckGround(blinkDestination.y);
             }
             blinkParticle.transform.position = blinkDestination;
             blinkParticle.Play();
         }
 
-        else if(Input.GetMouseButtonUp(1))
+        else if(Input.GetMouseButtonUp(1) && !isInterrupted)
         {
             base.PerformAbility();
             CharacterController cc = this.gameObject.GetComponent<CharacterController>();
@@ -81,8 +75,9 @@ public class Blink : Ability
         
     }
 
-    private void InterruptBlink()
+    private float CheckGround(float yPoint)
     {
-        blinkParticle.Stop();
+        return yPoint < 0.5f ? 0.5f : yPoint;
+
     }
 }
