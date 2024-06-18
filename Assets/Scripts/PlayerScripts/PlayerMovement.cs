@@ -1,25 +1,33 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public CharacterController controller;
-    public float speed = 12f;
-    public float jumpHeight = 3f;
-    public float crouchSpeed = 4f;
-    public float sprintSpeed = 20f;
+    [SerializeField]
+    private CharacterController controller;
+    [SerializeField]
+    private float speed = 12f;
+    [SerializeField]
+    private float jumpHeight = 3f;
+    [SerializeField]
+    private float crouchSpeed = 4f;
+    [SerializeField]
+    private float sprintSpeed = 20f;
     private float initialZRotation;
     private float initialYRotation;
-    private bool isPeeking = false;
     private bool isPeekingLeft = false;
     private bool isPeekingRight = false;
+    private Vector3 velocity;
+    [SerializeField]
+    private Transform groundCheck;
+    [SerializeField] 
+    private float groundDistance = 0.4f;
+    [SerializeField]
+    private LayerMask groundMask;
+    private bool isGrounded;
 
-    Vector3 velocity;
-    public Transform groundCheck;
-    public float groundDistance = 0.4f;
-    public LayerMask groundMask;
-    bool isGrounded;
     void Update()
     {
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
@@ -40,7 +48,6 @@ public class PlayerMovement : MonoBehaviour
         CheckPeek();
         velocity.y += (Physics.gravity.y * 1.5f) * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
-
     }
 
     private void CheckJump()
@@ -114,10 +121,10 @@ public class PlayerMovement : MonoBehaviour
     {
         if (isPeekingRight)
         {
-            Debug.Log("Peek bırakıldı");
             transform.rotation = Quaternion.Euler(0, initialYRotation, initialZRotation);
             isPeekingRight = false;
         }
     }
 }
+
 }
