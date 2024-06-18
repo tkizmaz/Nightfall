@@ -34,42 +34,42 @@ public class Blink : Ability
         {
             if(Input.GetMouseButton(1))
             {
-            RaycastHit hit;
-            if(Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, maxDistance))
-            {
-                Vector3 nearestPoint = hit.point - fpsCam.transform.forward * offsetDistance;
-                Debug.DrawRay(fpsCam.transform.position, fpsCam.transform.forward * hit.distance, Color.black);
+                RaycastHit hit;
+                if(Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, maxDistance))
+                {
+                    Vector3 nearestPoint = hit.point - fpsCam.transform.forward * offsetDistance;
+                    Debug.DrawRay(fpsCam.transform.position, fpsCam.transform.forward * hit.distance, Color.black);
 
-                nearestPoint.y = CheckGround(nearestPoint.y);
-                blinkDestination = nearestPoint;
+                    nearestPoint.y = CheckGround(nearestPoint.y);
+                    blinkDestination = nearestPoint;
+                }
+                else
+                {
+                    Debug.DrawRay(fpsCam.transform.position, fpsCam.transform.forward * maxDistance, Color.black);
+                    blinkDestination = fpsCam.transform.position + fpsCam.transform.forward * maxDistance;
+                    blinkDestination.y = CheckGround(blinkDestination.y);
+                }
+                blinkParticle.transform.position = blinkDestination;
+                blinkParticle.Play();
             }
-            else
-            {
-                Debug.DrawRay(fpsCam.transform.position, fpsCam.transform.forward * maxDistance, Color.black);
-                blinkDestination = fpsCam.transform.position + fpsCam.transform.forward * maxDistance;
-                blinkDestination.y = CheckGround(blinkDestination.y);
-            }
-            blinkParticle.transform.position = blinkDestination;
-            blinkParticle.Play();
-        }
 
-        else if(Input.GetMouseButtonUp(1))
-        {
-            base.PerformAbility();
-            CharacterController cc = this.gameObject.GetComponent<CharacterController>();
-            if (cc != null)
+            else if(Input.GetMouseButtonUp(1))
             {
-                cc.enabled = false;
-                this.gameObject.transform.position = blinkDestination;
-                cc.enabled = true;
+                base.PerformAbility();
+                CharacterController cc = this.gameObject.GetComponent<CharacterController>();
+                if (cc != null)
+                {
+                    cc.enabled = false;
+                    this.gameObject.transform.position = blinkDestination;
+                    cc.enabled = true;
+                }
+                else
+                {
+                    this.gameObject.transform.position = blinkDestination;
+                }
+                blinkParticle.Stop();
+                StartCooldown();
             }
-            else
-            {
-                this.gameObject.transform.position = blinkDestination;
-            }
-            blinkParticle.Stop();
-            StartCooldown();
-        }
         }
         
     }
