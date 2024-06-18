@@ -4,11 +4,18 @@ using UnityEngine;
 
 public class Ability : MonoBehaviour
 {
-    private int manaCost;
+    protected float cooldownDuration;
+    protected int manaCost;
     public int ManaCost
     {
         get { return manaCost; }
         set { manaCost = value; }
+    }
+
+    public float CooldownDuration
+    {
+        get { return cooldownDuration; }
+        set { cooldownDuration = value; }
     }
 
     protected virtual void PerformAbility()
