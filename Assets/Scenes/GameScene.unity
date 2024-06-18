@@ -7825,6 +7825,7 @@ GameObject:
   - component: {fileID: 1212037836}
   - component: {fileID: 1212037838}
   - component: {fileID: 1212037839}
+  - component: {fileID: 1212037840}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -7898,9 +7899,6 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 64
-  maxDistance: 25
-  fpsCam: {fileID: 912966803}
-  blinkParticle: {fileID: 1046898526}
 --- !u!114 &1212037839
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7913,6 +7911,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6431770268636470a98c04f785d3f193, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1212037840
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1212037835}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c92c8564b3a84acfb3d8df70cfd91c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fpsCam: {fileID: 912966803}
+  maxDistance: 25
+  offsetDistance: 0.5
+  blinkParticle: {fileID: 1046898526}
 --- !u!1001 &1236286414
 PrefabInstance:
   m_ObjectHideFlags: 0
