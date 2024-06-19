@@ -11,6 +11,7 @@ public class Ability : MonoBehaviour
     protected float cooldownDuration;
     protected int manaCost;
     protected bool isReadyToPerform = true;
+    public AbilityUsedEvent abilityUsed;
     public int ManaCost
     {
         get { return manaCost; }
@@ -26,6 +27,8 @@ public class Ability : MonoBehaviour
     protected virtual void PerformAbility()
     {
         isReadyToPerform = false;
+        StartCooldown();
+        abilityUsed.Invoke(manaCost);
     }
 
     protected virtual void StartCooldown()
@@ -36,5 +39,20 @@ public class Ability : MonoBehaviour
     {
         yield return new WaitForSeconds(cooldownDuration);
         isReadyToPerform = true;
+    }
+
+    private void Start() 
+    {
+        Mana playerMana = this.gameObject.GetComponent<Mana>();
+        if(playerMana != null)
+        {
+            abilityUsed.AddListener(playerMana.OnAbilityUsed);
+        }
+    }
+
+    protected bool HasEnoughMana()
+    {
+        Mana playerMana = this.gameObject.GetComponent<Mana>();
+        return playerMana.StatValue >= manaCost ? true : false;
     }
 }
