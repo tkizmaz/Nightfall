@@ -11,8 +11,8 @@ public class GameUI : MonoBehaviour
     [SerializeField]
     private GameObject player;
 
-    // Start is called before the first frame update
-    void Start()
+    public void ChangeManaText(int mana)
     {
+        manaText.text = "Mana: " + mana;
     }
 }
