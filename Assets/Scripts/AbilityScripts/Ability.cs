@@ -6,12 +6,17 @@ using UnityEngine.Events;
 
 [System.Serializable]
 public class AbilityUsedEvent : UnityEvent<int> {}
+
+[System.Serializable]
+public class AbilityStatusEvent : UnityEvent<bool> {}
+
 public class Ability : MonoBehaviour
 {
     protected float cooldownDuration;
     protected int manaCost;
     protected bool isReadyToPerform = true;
     public AbilityUsedEvent abilityUsed;
+    public AbilityStatusEvent isAbilityReady;
     public int ManaCost
     {
         get { return manaCost; }
@@ -27,6 +32,7 @@ public class Ability : MonoBehaviour
     protected virtual void PerformAbility()
     {
         isReadyToPerform = false;
+        isAbilityReady.Invoke(isReadyToPerform);
         StartCooldown();
         abilityUsed.Invoke(manaCost);
     }
@@ -39,6 +45,7 @@ public class Ability : MonoBehaviour
     {
         yield return new WaitForSeconds(cooldownDuration);
         isReadyToPerform = true;
+        isAbilityReady.Invoke(isReadyToPerform);
     }
 
     private void Start() 
@@ -48,6 +55,12 @@ public class Ability : MonoBehaviour
         {
             abilityUsed.AddListener(playerMana.OnAbilityUsed);
         }
+        GameUI gameUI = GameObject.FindWithTag("GameController").GetComponent<GameUI>();
+        if(gameUI != null)
+        {
+            isAbilityReady.AddListener(gameUI.ChangeAbilityStatus);
+        }
+
     }
 
     protected bool HasEnoughMana()
@@ -55,4 +68,6 @@ public class Ability : MonoBehaviour
         Mana playerMana = this.gameObject.GetComponent<Mana>();
         return playerMana.StatValue >= manaCost ? true : false;
     }
+
+    
 }
