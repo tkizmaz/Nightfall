@@ -8,4 +8,9 @@ public class Mana : Stat
     {
         Debug.Log("Mana finished");
     }
+
+    public void OnAbilityUsed(int manaCost)
+    {
+        StatValue -= manaCost;
+    }
 }
