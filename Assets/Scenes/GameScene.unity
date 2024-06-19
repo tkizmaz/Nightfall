@@ -5178,6 +5178,7 @@ MonoBehaviour:
   healthText: {fileID: 1462820080}
   manaText: {fileID: 987140332}
   player: {fileID: 1212037835}
+  blinkIcon: {fileID: 85894904}
 --- !u!1001 &828133118
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7582,7 +7583,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1180477734}
   m_Layer: 5
-  m_Name: GameObject
+  m_Name: BlinkIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8035,6 +8036,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   abilityUsed:
+    m_PersistentCalls:
+      m_Calls: []
+  isAbilityReady:
     m_PersistentCalls:
       m_Calls: []
   fpsCam: {fileID: 912966803}
@@ -11980,7 +11984,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2016577877
 Transform:
   m_ObjectHideFlags: 0
