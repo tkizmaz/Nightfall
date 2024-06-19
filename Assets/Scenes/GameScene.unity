@@ -5055,7 +5055,7 @@ GameObject:
   - component: {fileID: 807027678}
   m_Layer: 0
   m_Name: GameManager
-  m_TagString: Untagged
+  m_TagString: GameController
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -7923,6 +7923,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c92c8564b3a84acfb3d8df70cfd91c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  abilityUsed:
+    m_PersistentCalls:
+      m_Calls: []
   fpsCam: {fileID: 912966803}
   maxDistance: 25
   offsetDistance: 0.5
