@@ -30,7 +30,8 @@ public class Blink : Ability
 
     protected override void PerformAbility()
     {
-        if(isReadyToPerform)
+        bool hasEnoughMana = HasEnoughMana();
+        if(isReadyToPerform && hasEnoughMana)
         {
             if(Input.GetMouseButton(1))
             {
@@ -55,7 +56,6 @@ public class Blink : Ability
 
             else if(Input.GetMouseButtonUp(1))
             {
-                base.PerformAbility();
                 CharacterController cc = this.gameObject.GetComponent<CharacterController>();
                 if (cc != null)
                 {
@@ -68,7 +68,7 @@ public class Blink : Ability
                     this.gameObject.transform.position = blinkDestination;
                 }
                 blinkParticle.Stop();
-                StartCooldown();
+                base.PerformAbility();
             }
         }
         
@@ -76,7 +76,7 @@ public class Blink : Ability
 
     private float CheckGround(float yPoint)
     {
-        return yPoint < 0.5f ? 0.5f : yPoint;
+        return yPoint < 0.0f ? 0.0f : yPoint;
 
     }
 }
