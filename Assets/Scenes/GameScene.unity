@@ -5567,6 +5567,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1212037835}
+  initialPotionCount: 3
 --- !u!4 &807027677
 Transform:
   m_ObjectHideFlags: 0
@@ -5596,6 +5597,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   healthText: {fileID: 1462820080}
   manaText: {fileID: 987140332}
+  healtPotionCountText: {fileID: 709867152}
+  manaPotionCountText: {fileID: 616364420}
   player: {fileID: 1212037835}
   blinkIcon: {fileID: 85894904}
 --- !u!1001 &828133118
@@ -8442,6 +8445,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6431770268636470a98c04f785d3f193, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  healthPotionKey: 114
+  manaPotionKey: 116
 --- !u!114 &1212037840
 MonoBehaviour:
   m_ObjectHideFlags: 0

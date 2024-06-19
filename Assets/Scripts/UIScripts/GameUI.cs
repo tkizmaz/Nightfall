@@ -9,10 +9,16 @@ public class GameUI : MonoBehaviour
     private TMPro.TMP_Text healthText;
     [SerializeField]
     private TMPro.TMP_Text manaText;
+        [SerializeField]
+    private TMPro.TMP_Text healtPotionCountText;
+    [SerializeField]
+    private TMPro.TMP_Text manaPotionCountText;
     [SerializeField]
     private GameObject player;
     [SerializeField]
     private Image blinkIcon;
+
+
 
     public void ChangeManaText(int mana)
     {
@@ -22,5 +28,11 @@ public class GameUI : MonoBehaviour
     public void ChangeAbilityStatus(bool status)
     {
         blinkIcon.color = status ? Color.white : Color.grey;
+    }
+
+    private void Start() 
+    {
+        healtPotionCountText.text = GameManager.instance.initialPotionCount.ToString();
+        manaPotionCountText.text = GameManager.instance.initialPotionCount.ToString();
     }
 }

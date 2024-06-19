@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
     [SerializeField]
     private GameObject player;    
+    public int initialPotionCount = 3;
     private void Awake() 
     {
         if(instance == null)
