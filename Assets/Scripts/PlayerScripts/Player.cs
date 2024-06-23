@@ -45,4 +45,32 @@ public class Player : MonoBehaviour
             manaPotions.Add(manaPotion);
         }
     }
+
+    private void CheckPotionUse()
+    {
+        if(Input.GetKeyDown(healthPotionKey) && healthPotions.Count > 0 && health.StatValue < health.MaxStatValue)
+        {
+            HealthPotion healthPotion = healthPotions[0];
+            healthPotions.RemoveAt(0);
+            healthPotion.RestoreStat();
+            Destroy(healthPotion);
+        }
+        if(Input.GetKeyDown(manaPotionKey) && manaPotions.Count > 0 && mana.StatValue < mana.MaxStatValue)
+        {
+            ManaPotion manaPotion = manaPotions[0];
+            manaPotions.RemoveAt(0);
+            manaPotion.RestoreStat();
+            Destroy(manaPotion);
+        }
+    }
+
+    private void Update() 
+    {
+        CheckPotionUse();    
+    }
+
+    public int GetPotionCount(StatType statType)
+    {
+        return statType == StatType.Health ? healthPotions.Count : manaPotions.Count;
+    }
 }
