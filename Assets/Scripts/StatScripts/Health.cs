@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class Health : Stat
 {
+    protected override void Awake() 
+    {
+        base.Awake();
+        statType = StatType.Health;    
+    }
     protected override void OnStatFinished()
     {
         Debug.Log("Health finished");
