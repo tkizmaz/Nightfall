@@ -1,18 +1,44 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+
+[System.Serializable]
+public class PotionUsedEvent : UnityEvent<StatType, int> {}
 
 public class Potion : Tool
 {
-    private int restoreValue;
+    public PotionUsedEvent OnPotionUse;
+    protected StatType statType;
+    protected int restoreValue;
     public int RestoreValue
     {
         get { return restoreValue; }
         set { restoreValue = value; }
     }
 
-    protected virtual void RestoreStat()
+    public virtual void RestoreStat()
     {
-        Debug.Log("Restored " + restoreValue + " points");
+        Player player = this.gameObject.GetComponent<Player>();
+        Stat playerStat = statType == StatType.Health ? player.Health : player.Mana;
+        int valueToRestore = playerStat.StatValue + restoreValue;
+        int restoredValue = valueToRestore > playerStat.MaxStatValue ? playerStat.MaxStatValue : valueToRestore;
+        playerStat.StatValue = restoredValue;
+        OnPotionUse.Invoke(statType, player.GetPotionCount(statType));
+    }
+
+    protected virtual void Start()
+    {
+        GameObject gameController = GameObject.FindWithTag("GameController");
+        GameUI gameUI = gameController.GetComponent<GameUI>();
+        if(gameUI != null)
+        {
+            OnPotionUse.AddListener(gameUI.ChangePotionCount);
+        }
+    }
+
+    private void Awake() 
+    {
+        OnPotionUse = new PotionUsedEvent();
     }
 }
