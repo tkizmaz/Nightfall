@@ -10,8 +10,16 @@ public class AbilityUsedEvent : UnityEvent<int> {}
 [System.Serializable]
 public class AbilityStatusEvent : UnityEvent<bool> {}
 
+public enum AbilityType
+{
+    Blink,
+    BendTime,
+    DarkVision
+}
+
 public class Ability : MonoBehaviour
 {
+    protected AbilityType abilityType;
     protected float cooldownDuration;
     protected int manaCost;
     protected bool isReadyToPerform = true;
