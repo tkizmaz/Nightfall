@@ -18,11 +18,16 @@ public class GameUI : MonoBehaviour
     [SerializeField]
     private Image blinkIcon;
 
-
-
-    public void ChangeManaText(int mana)
+    public void ChangePotionCount(StatType statType, int potionCount)
     {
-        manaText.text = "Mana: " + mana;
+        TMPro.TMP_Text textToChange = statType == StatType.Health ? healtPotionCountText : manaPotionCountText;
+        textToChange.text = potionCount.ToString();
+    }
+
+    public void ChangeStatText(StatType statType, int statValue)
+    {
+        TMPro.TMP_Text textToChange = statType == StatType.Health ? healthText : manaText;
+        textToChange.text = statType.ToString() + ": " + statValue.ToString();
     }
 
     public void ChangeAbilityStatus(bool status)
