@@ -8,7 +8,10 @@ using UnityEngine.Events;
 public class AbilityUsedEvent : UnityEvent<int> {}
 
 [System.Serializable]
-public class AbilityStatusEvent : UnityEvent<bool> {}
+public class AbilityStatusEvent : UnityEvent<AbilityType, bool> {}
+
+[System.Serializable]
+public class AbilitySelectionEvent : UnityEvent<AbilityType, bool> {}
 
 public enum AbilityType
 {
@@ -19,12 +22,15 @@ public enum AbilityType
 
 public class Ability : MonoBehaviour
 {
+    protected bool isAbilitySelected = false;
     protected AbilityType abilityType;
     protected float cooldownDuration;
     protected int manaCost;
     protected bool isReadyToPerform = true;
     public AbilityUsedEvent abilityUsed;
     public AbilityStatusEvent isAbilityReady;
+    public AbilitySelectionEvent isAbilitySelectedEvent;
+    
     public int ManaCost
     {
         get { return manaCost; }
@@ -37,12 +43,20 @@ public class Ability : MonoBehaviour
         set { cooldownDuration = value; }
     }
 
+    public bool IsAbilitySelected
+    {
+        get { return isAbilitySelected; }
+        set { isAbilitySelected = value; 
+              isAbilitySelectedEvent.Invoke(abilityType, isAbilitySelected);
+        }
+    }
+
     protected virtual void PerformAbility()
     {
         isReadyToPerform = false;
-        isAbilityReady.Invoke(isReadyToPerform);
-        StartCooldown();
+        isAbilityReady.Invoke(abilityType, isReadyToPerform);
         abilityUsed.Invoke(manaCost);
+        StartCooldown();
     }
 
     protected virtual void StartCooldown()
@@ -53,7 +67,7 @@ public class Ability : MonoBehaviour
     {
         yield return new WaitForSeconds(cooldownDuration);
         isReadyToPerform = true;
-        isAbilityReady.Invoke(isReadyToPerform);
+        isAbilityReady.Invoke(abilityType, isReadyToPerform);
     }
 
     private void Start() 
@@ -67,6 +81,7 @@ public class Ability : MonoBehaviour
         if(gameUI != null)
         {
             isAbilityReady.AddListener(gameUI.ChangeAbilityStatus);
+            isAbilitySelectedEvent.AddListener(gameUI.ChangeAbilitySelection);
         }
 
     }
@@ -77,5 +92,9 @@ public class Ability : MonoBehaviour
         return playerMana.StatValue >= manaCost ? true : false;
     }
 
+    public void SelectAbility()
+    {
+        isAbilitySelected = true;
+    }
     
 }
