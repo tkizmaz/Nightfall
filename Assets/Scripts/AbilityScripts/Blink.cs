@@ -15,9 +15,9 @@ public class Blink : Ability
     [SerializeField]
     private ParticleSystem blinkParticle;
     private Vector3 blinkDestination;
-    private bool isInterrupted = false;
     private void Awake() 
     {
+        abilityType = AbilityType.Blink;
         blinkParticle.Stop();
         manaCost = 20;
         cooldownDuration = 2f;
@@ -31,7 +31,7 @@ public class Blink : Ability
     protected override void PerformAbility()
     {
         bool hasEnoughMana = HasEnoughMana();
-        if(isReadyToPerform && hasEnoughMana)
+        if(isReadyToPerform && hasEnoughMana && isAbilitySelected)
         {
             if(Input.GetMouseButton(1))
             {
@@ -77,6 +77,5 @@ public class Blink : Ability
     private float CheckGround(float yPoint)
     {
         return yPoint < 0.0f ? 0.0f : yPoint;
-
     }
 }
