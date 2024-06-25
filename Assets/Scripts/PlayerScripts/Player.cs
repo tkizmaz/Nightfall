@@ -12,8 +12,9 @@ public class Player : MonoBehaviour
     private KeyCode healthPotionKey = KeyCode.R;
     [SerializeField]
     private KeyCode manaPotionKey = KeyCode.T;
-
-    Blink blink;
+    private Ability selectedAbility;
+    private Blink blink;
+    private BendTime bendTime;
 
     public Health Health
     {
@@ -27,11 +28,12 @@ public class Player : MonoBehaviour
         set { mana = value; }
     }
 
-    void Start()
+    void Awake()
     {
         health = this.gameObject.AddComponent<Health>();
         mana = this.gameObject.AddComponent<Mana>();
         blink = this.gameObject.GetComponent<Blink>();
+        bendTime = this.gameObject.GetComponent<BendTime>();
         AssignInitialPotions();
     }
 
@@ -67,10 +69,28 @@ public class Player : MonoBehaviour
     private void Update() 
     {
         CheckPotionUse();    
+        CheckAbilitySelection();
     }
 
     public int GetPotionCount(StatType statType)
     {
         return statType == StatType.Health ? healthPotions.Count : manaPotions.Count;
+    }
+
+    private void CheckAbilitySelection()
+    {
+        if(Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            selectedAbility = blink;
+            blink.IsAbilitySelected = true;
+            bendTime.IsAbilitySelected = false;
+        }
+
+        else if(Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            selectedAbility = bendTime;
+            bendTime.IsAbilitySelected = true;
+            blink.IsAbilitySelected = false;
+        }
     }
 }
