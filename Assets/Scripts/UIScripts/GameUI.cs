@@ -9,7 +9,7 @@ public class GameUI : MonoBehaviour
     private TMPro.TMP_Text healthText;
     [SerializeField]
     private TMPro.TMP_Text manaText;
-        [SerializeField]
+    [SerializeField]
     private TMPro.TMP_Text healtPotionCountText;
     [SerializeField]
     private TMPro.TMP_Text manaPotionCountText;
@@ -17,6 +17,8 @@ public class GameUI : MonoBehaviour
     private GameObject player;
     [SerializeField]
     private Image blinkIcon;
+    [SerializeField]
+    private Image bendTimeIcon;
 
     public void ChangePotionCount(StatType statType, int potionCount)
     {
@@ -30,9 +32,17 @@ public class GameUI : MonoBehaviour
         textToChange.text = statType.ToString() + ": " + statValue.ToString();
     }
 
-    public void ChangeAbilityStatus(bool status)
+    public void ChangeAbilityStatus(AbilityType abilityType, bool status)
     {
-        blinkIcon.color = status ? Color.white : Color.grey;
+        Image imageToChange = abilityType == AbilityType.Blink ? blinkIcon : bendTimeIcon;
+        imageToChange.color = status ? Color.green : Color.grey;
+    }
+
+    public void ChangeAbilitySelection(AbilityType abilityType, bool isSelected)
+    {
+        Color color = isSelected ? Color.green : Color.white;
+        Image imageToChange = abilityType == AbilityType.Blink ? blinkIcon : bendTimeIcon;
+        imageToChange.color = color;
     }
 
     private void Start() 
