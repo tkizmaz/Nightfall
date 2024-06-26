@@ -31,9 +31,11 @@ public class Potion : Tool
     {
         GameObject gameController = GameObject.FindWithTag("GameController");
         GameUI gameUI = gameController.GetComponent<GameUI>();
+        AudioManager audioManager = gameController.GetComponent<AudioManager>();
         if(gameUI != null)
         {
             OnPotionUse.AddListener(gameUI.ChangePotionCount);
+            OnPotionUse.AddListener(audioManager.PlaySwallowSfx);
         }
     }
 
