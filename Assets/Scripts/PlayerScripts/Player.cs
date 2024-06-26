@@ -15,6 +15,7 @@ public class Player : MonoBehaviour
     private Ability selectedAbility;
     private Blink blink;
     private BendTime bendTime;
+    private DarkVision darkVision;
 
     public Health Health
     {
@@ -34,6 +35,7 @@ public class Player : MonoBehaviour
         mana = this.gameObject.AddComponent<Mana>();
         blink = this.gameObject.GetComponent<Blink>();
         bendTime = this.gameObject.GetComponent<BendTime>();
+        darkVision = this.gameObject.GetComponent<DarkVision>();
         AssignInitialPotions();
     }
 
@@ -84,6 +86,7 @@ public class Player : MonoBehaviour
             selectedAbility = blink;
             blink.IsAbilitySelected = true;
             bendTime.IsAbilitySelected = false;
+            darkVision.IsAbilitySelected = false;
         }
 
         else if(Input.GetKeyDown(KeyCode.Alpha2))
@@ -91,6 +94,15 @@ public class Player : MonoBehaviour
             selectedAbility = bendTime;
             bendTime.IsAbilitySelected = true;
             blink.IsAbilitySelected = false;
+            darkVision.IsAbilitySelected = false;
+        }
+
+        else if(Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            selectedAbility = darkVision;
+            darkVision.IsAbilitySelected = true;
+            blink.IsAbilitySelected = false;
+            bendTime.IsAbilitySelected = false;
         }
     }
 }
