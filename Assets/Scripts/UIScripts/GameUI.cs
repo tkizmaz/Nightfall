@@ -19,6 +19,11 @@ public class GameUI : MonoBehaviour
     private Image blinkIcon;
     [SerializeField]
     private Image bendTimeIcon;
+    [SerializeField]
+    private Image darkVisionIcon;
+
+    //Create a dictionary where key is ability type and value is a bool
+    private Dictionary<AbilityType, Image> abilityIconDict = new Dictionary<AbilityType, Image>();
 
     public void ChangePotionCount(StatType statType, int potionCount)
     {
@@ -34,14 +39,14 @@ public class GameUI : MonoBehaviour
 
     public void ChangeAbilityStatus(AbilityType abilityType, bool status, bool isSelected)
     {
-        Image imageToChange = abilityType == AbilityType.Blink ? blinkIcon : bendTimeIcon;
+        Image imageToChange = abilityIconDict[abilityType];
         imageToChange.color = (status && isSelected) ? Color.green : Color.grey;
     }
 
     public void ChangeAbilitySelection(AbilityType abilityType, bool isSelected)
     {
+        Image imageToChange = abilityIconDict[abilityType];
         Color color = isSelected ? Color.green : Color.white;
-        Image imageToChange = abilityType == AbilityType.Blink ? blinkIcon : bendTimeIcon;
         imageToChange.color = color;
     }
 
@@ -49,5 +54,8 @@ public class GameUI : MonoBehaviour
     {
         healtPotionCountText.text = GameManager.instance.initialPotionCount.ToString();
         manaPotionCountText.text = GameManager.instance.initialPotionCount.ToString();
+        abilityIconDict.Add(AbilityType.Blink, blinkIcon);
+        abilityIconDict.Add(AbilityType.BendTime, bendTimeIcon);
+        abilityIconDict.Add(AbilityType.DarkVision, darkVisionIcon);
     }
 }
