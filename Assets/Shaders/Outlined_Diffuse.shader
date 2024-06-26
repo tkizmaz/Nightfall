@@ -127,10 +127,10 @@ Shader "Outlined/Silhouetted Diffuse"
 			//Blend DstColor Zero // Multiplicative
 			//Blend DstColor SrcColor // 2x Multiplicative
  
-			CGPROGRAM
-			#pragma vertex vert
-			#pragma exclude_renderers gles xbox360 ps3
-			ENDCG
+			//CGPROGRAM
+			//#pragma vertex vert
+			//#pragma exclude_renderers gles xbox360 ps3
+			//ENDCG
 			SetTexture [_MainTex] { combine primary }
 		}
  
