@@ -8,7 +8,7 @@ using UnityEngine.Events;
 public class AbilityUsedEvent : UnityEvent<int> {}
 
 [System.Serializable]
-public class AbilityStatusEvent : UnityEvent<AbilityType, bool> {}
+public class AbilityStatusEvent : UnityEvent<AbilityType, bool, bool> {}
 
 [System.Serializable]
 public class AbilitySelectionEvent : UnityEvent<AbilityType, bool> {}
@@ -54,7 +54,7 @@ public class Ability : MonoBehaviour
     protected virtual void PerformAbility()
     {
         isReadyToPerform = false;
-        isAbilityReady.Invoke(abilityType, isReadyToPerform);
+        isAbilityReady.Invoke(abilityType, isReadyToPerform, isAbilitySelected);
         abilityUsed.Invoke(manaCost);
         StartCooldown();
     }
@@ -67,7 +67,7 @@ public class Ability : MonoBehaviour
     {
         yield return new WaitForSeconds(cooldownDuration);
         isReadyToPerform = true;
-        isAbilityReady.Invoke(abilityType, isReadyToPerform);
+        isAbilityReady.Invoke(abilityType, isReadyToPerform, isAbilitySelected);
     }
 
     private void Start() 

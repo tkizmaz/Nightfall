@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CubeController : MonoBehaviour
 {
-    public float speed = 1.0f;
+    public float speed = 100.0f;
     // Update is called once per frame
     void Update()
     {

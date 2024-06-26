@@ -32,10 +32,10 @@ public class GameUI : MonoBehaviour
         textToChange.text = statType.ToString() + ": " + statValue.ToString();
     }
 
-    public void ChangeAbilityStatus(AbilityType abilityType, bool status)
+    public void ChangeAbilityStatus(AbilityType abilityType, bool status, bool isSelected)
     {
         Image imageToChange = abilityType == AbilityType.Blink ? blinkIcon : bendTimeIcon;
-        imageToChange.color = status ? Color.green : Color.grey;
+        imageToChange.color = (status && isSelected) ? Color.green : Color.grey;
     }
 
     public void ChangeAbilitySelection(AbilityType abilityType, bool isSelected)
