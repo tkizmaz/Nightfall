@@ -21,6 +21,11 @@ public class GameUI : MonoBehaviour
     private Image bendTimeIcon;
     [SerializeField]
     private Image darkVisionIcon;
+    [SerializeField]
+    private Slider healthSlider;
+    [SerializeField]
+    private Slider manaSlider;
+    
 
     //Create a dictionary where key is ability type and value is a bool
     private Dictionary<AbilityType, Image> abilityIconDict = new Dictionary<AbilityType, Image>();
@@ -33,8 +38,8 @@ public class GameUI : MonoBehaviour
 
     public void ChangeStatText(StatType statType, int statValue)
     {
-        TMPro.TMP_Text textToChange = statType == StatType.Health ? healthText : manaText;
-        textToChange.text = statType.ToString() + ": " + statValue.ToString();
+        Slider sliderToChange = statType == StatType.Health ? healthSlider : manaSlider;
+        sliderToChange.value = statValue;
     }
 
     public void ChangeAbilityStatus(AbilityType abilityType, bool status, bool isSelected)
@@ -52,6 +57,10 @@ public class GameUI : MonoBehaviour
 
     private void Start() 
     {
+        healthSlider.maxValue = 100;
+        manaSlider.maxValue = 100;
+        healthSlider.value = 100;
+        manaSlider.value = 100;
         healtPotionCountText.text = GameManager.instance.initialPotionCount.ToString();
         manaPotionCountText.text = GameManager.instance.initialPotionCount.ToString();
         abilityIconDict.Add(AbilityType.Blink, blinkIcon);
