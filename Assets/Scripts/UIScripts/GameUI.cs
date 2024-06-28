@@ -25,9 +25,6 @@ public class GameUI : MonoBehaviour
     private Slider healthSlider;
     [SerializeField]
     private Slider manaSlider;
-    
-
-    //Create a dictionary where key is ability type and value is a bool
     private Dictionary<AbilityType, Image> abilityIconDict = new Dictionary<AbilityType, Image>();
 
     public void ChangePotionCount(StatType statType, int potionCount)
