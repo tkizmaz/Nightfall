@@ -16,6 +16,7 @@ public class Player : MonoBehaviour
     private Blink blink;
     private BendTime bendTime;
     private DarkVision darkVision;
+    private Dictionary<KeyCode, Ability> abilityDict = new Dictionary<KeyCode, Ability>();
 
     public Health Health
     {
@@ -37,6 +38,7 @@ public class Player : MonoBehaviour
         bendTime = this.gameObject.GetComponent<BendTime>();
         darkVision = this.gameObject.GetComponent<DarkVision>();
         AssignInitialPotions();
+        AssignAbilitiesToKeys();
     }
 
     private void AssignInitialPotions()
@@ -49,6 +51,13 @@ public class Player : MonoBehaviour
             manaPotions.Add(manaPotion);
         }
     }
+
+    private void AssignAbilitiesToKeys()
+    {
+        abilityDict.Add(KeyCode.Alpha1, blink);
+        abilityDict.Add(KeyCode.Alpha2, bendTime);
+        abilityDict.Add(KeyCode.Alpha3, darkVision);
+    }   
 
     private void CheckPotionUse()
     {
@@ -81,28 +90,20 @@ public class Player : MonoBehaviour
 
     private void CheckAbilitySelection()
     {
-        if(Input.GetKeyDown(KeyCode.Alpha1))
+        foreach(KeyCode key in abilityDict.Keys)
         {
-            selectedAbility = blink;
-            blink.IsAbilitySelected = true;
-            bendTime.IsAbilitySelected = false;
-            darkVision.IsAbilitySelected = false;
-        }
-
-        else if(Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            selectedAbility = bendTime;
-            bendTime.IsAbilitySelected = true;
-            blink.IsAbilitySelected = false;
-            darkVision.IsAbilitySelected = false;
-        }
-
-        else if(Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            selectedAbility = darkVision;
-            darkVision.IsAbilitySelected = true;
-            blink.IsAbilitySelected = false;
-            bendTime.IsAbilitySelected = false;
+            if(Input.GetKeyDown(key))
+            {
+                selectedAbility = abilityDict[key];
+                selectedAbility.IsAbilitySelected = true;
+                foreach(Ability ability in abilityDict.Values)
+                {
+                    if(ability != selectedAbility)
+                    {
+                        ability.IsAbilitySelected = false;
+                    }
+                }
+            }
         }
     }
 }
