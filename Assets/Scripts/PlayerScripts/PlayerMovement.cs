@@ -1,7 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.VFX;
+
+[System.Serializable]
+public class PlayerWalkingEvent : UnityEvent<bool> {}
+[System.Serializable]
+public class PlayerSlashEvent : UnityEvent<bool> {}
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -27,6 +33,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     private LayerMask groundMask;
     private bool isGrounded;
+    public PlayerWalkingEvent onPlayerWalk;
+    public PlayerSlashEvent onPlayerSlash;
 
     void Update()
     {
@@ -42,12 +50,26 @@ public class PlayerMovement : MonoBehaviour
         Vector3 move = transform.right * x + transform.forward * z;
         controller.Move(move * speed * Time.deltaTime);
 
+        if(move != Vector3.zero)
+        {
+            onPlayerWalk.Invoke(true);
+        }
+        else
+        {
+            onPlayerWalk.Invoke(false);
+        }
+
         CheckJump();
         CheckSprint();
         CheckCrouch();
         CheckPeek();
         velocity.y += (Physics.gravity.y * 1.5f) * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
+
+        if(Input.GetMouseButtonDown(0))
+        {
+            onPlayerSlash.Invoke(true);
+        }
     }
 
     private void CheckJump()
@@ -81,6 +103,17 @@ public class PlayerMovement : MonoBehaviour
         else if(Input.GetKeyUp(KeyCode.LeftControl))
         {
             speed = 12f;
+        }
+    }
+
+
+    private void Start() 
+    {
+        PlayerAnimationController playerAnimationController = this.gameObject.GetComponent<PlayerAnimationController>();
+        if(playerAnimationController != null)
+        {
+            onPlayerWalk.AddListener(playerAnimationController.PlayWalkAnimation);
+            onPlayerSlash.AddListener(playerAnimationController.PlaySlashAnimation);
         }
     }
 
@@ -125,6 +158,6 @@ public class PlayerMovement : MonoBehaviour
             isPeekingRight = false;
         }
     }
+    
 }
-
 }
