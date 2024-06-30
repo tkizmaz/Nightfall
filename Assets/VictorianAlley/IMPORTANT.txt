@@ -1,0 +1,22 @@
+﻿Thank you for purchasing the Victorian Alleys. 
+
+Please use the following project settings when using this asset.
+
+Edit->Project Settings->Player->Other Settings/Rendering
+Set the Color Space to "Linear"
+
+Edit->Project Settings->Graphics->Tier Settings
+Set the Rendering Path to "Deferred" (Consider "Forward" for VR)
+
+To achieve the same visuals as shown in the screenshots install the Post Processing stack via the the Windows->Packet Manager. 
+Follow the Unity docs to set up the Postprocessing stack: https://unity3d.com/how-to/set-up-post-processing-stack
+You find the arcording profiles under scenes/scene*Profiles
+
+
+To generate independed textures with the included Substances use the free Substance Player:
+https://www.allegorithmic.com/products/substance-player
+
+
+
+Regards
+TripleBrick
