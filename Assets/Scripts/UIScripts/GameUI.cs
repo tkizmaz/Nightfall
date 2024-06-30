@@ -22,9 +22,9 @@ public class GameUI : MonoBehaviour
     [SerializeField]
     private Image darkVisionIcon;
     [SerializeField]
-    private Slider healthSlider;
+    private Image healthSlider;
     [SerializeField]
-    private Slider manaSlider;
+    private Image manaSlider;
     private Dictionary<AbilityType, Image> abilityIconDict = new Dictionary<AbilityType, Image>();
 
     public void ChangePotionCount(StatType statType, int potionCount)
@@ -35,8 +35,8 @@ public class GameUI : MonoBehaviour
 
     public void ChangeStatText(StatType statType, int statValue)
     {
-        Slider sliderToChange = statType == StatType.Health ? healthSlider : manaSlider;
-        sliderToChange.value = statValue;
+        Image sliderToChange = statType == StatType.Health ? healthSlider : manaSlider;
+        sliderToChange.fillAmount = statValue / 100f;
     }
 
     public void ChangeAbilityStatus(AbilityType abilityType, bool status, bool isSelected)
@@ -54,10 +54,8 @@ public class GameUI : MonoBehaviour
 
     private void Start() 
     {
-        healthSlider.maxValue = 100;
-        manaSlider.maxValue = 100;
-        healthSlider.value = 100;
-        manaSlider.value = 100;
+        healthSlider.fillAmount = 1;
+        manaSlider.fillAmount = 1;
         healtPotionCountText.text = GameManager.instance.initialPotionCount.ToString();
         manaPotionCountText.text = GameManager.instance.initialPotionCount.ToString();
         abilityIconDict.Add(AbilityType.Blink, blinkIcon);
