@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerAnimationController : MonoBehaviour
 {
+    string SLASH_ANIMATION_1 = "Slash";
+
     [SerializeField]
     private Animator playerAnimator;
 
@@ -12,8 +14,8 @@ public class PlayerAnimationController : MonoBehaviour
         playerAnimator.SetBool("isWalking", isWalking);
     }
 
-    public void PlaySlashAnimation(bool isSlashing)
+    public void PlaySlashAnimation()
     {
-        playerAnimator.SetBool("isSlashing", isSlashing);
+        playerAnimator.SetTrigger(SLASH_ANIMATION_1);
     }
 }

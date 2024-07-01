@@ -6,8 +6,6 @@ using UnityEngine.VFX;
 
 [System.Serializable]
 public class PlayerWalkingEvent : UnityEvent<bool> {}
-[System.Serializable]
-public class PlayerSlashEvent : UnityEvent<bool> {}
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -34,7 +32,7 @@ public class PlayerMovement : MonoBehaviour
     private LayerMask groundMask;
     private bool isGrounded;
     public PlayerWalkingEvent onPlayerWalk;
-    public PlayerSlashEvent onPlayerSlash;
+    public UnityEvent onPlayerSlash;
 
     void Update()
     {
@@ -68,7 +66,7 @@ public class PlayerMovement : MonoBehaviour
 
         if(Input.GetMouseButtonDown(0))
         {
-            onPlayerSlash.Invoke(true);
+            onPlayerSlash.Invoke();
         }
     }
 
