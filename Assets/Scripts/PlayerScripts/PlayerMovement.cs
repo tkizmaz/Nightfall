@@ -12,7 +12,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     private CharacterController controller;
     [SerializeField]
-    private float speed = 12f;
+    private float speed = 2f;
     [SerializeField]
     private float jumpHeight = 3f;
     [SerializeField]
@@ -32,8 +32,7 @@ public class PlayerMovement : MonoBehaviour
     private LayerMask groundMask;
     private bool isGrounded;
     public PlayerWalkingEvent onPlayerWalk;
-    public UnityEvent onPlayerSlash;
-
+    
     void Update()
     {
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
@@ -63,11 +62,6 @@ public class PlayerMovement : MonoBehaviour
         CheckPeek();
         velocity.y += (Physics.gravity.y * 1.5f) * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
-
-        if(Input.GetMouseButtonDown(0))
-        {
-            onPlayerSlash.Invoke();
-        }
     }
 
     private void CheckJump()
@@ -87,7 +81,7 @@ public class PlayerMovement : MonoBehaviour
 
         else if(Input.GetKeyUp(KeyCode.LeftShift))
         {
-            speed = 12f;
+            speed = 2f;
         }
     }
 
@@ -100,7 +94,7 @@ public class PlayerMovement : MonoBehaviour
 
         else if(Input.GetKeyUp(KeyCode.LeftControl))
         {
-            speed = 12f;
+            speed = 2f;
         }
     }
 
@@ -111,7 +105,6 @@ public class PlayerMovement : MonoBehaviour
         if(playerAnimationController != null)
         {
             onPlayerWalk.AddListener(playerAnimationController.PlayWalkAnimation);
-            onPlayerSlash.AddListener(playerAnimationController.PlaySlashAnimation);
         }
     }
 
