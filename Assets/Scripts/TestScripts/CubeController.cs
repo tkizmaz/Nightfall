@@ -7,31 +7,23 @@ public class CubeController : MonoBehaviour
     [SerializeField]
     private Material sihouetteShader;
     [SerializeField]
-    List<Material> defaultMaterials;
-    private Renderer enemyRenderer;
+    Material defaultMaterial;
+    [SerializeField]
+    private List<Renderer> enemyRenderer;
 
     public void ChangeToSilhouette()
     {
-        foreach(Material material in defaultMaterials)
+        foreach(Renderer renderer in enemyRenderer)
         {
-            enemyRenderer.material = sihouetteShader;
+            renderer.material = sihouetteShader;
         }
     }
 
     public void ChangeToDefault()
     {
-        foreach(Material material in defaultMaterials)
+        foreach(Renderer renderer in enemyRenderer)
         {
-            enemyRenderer.material = material;
-        }
-    }
-
-    private void Start() 
-    {
-        enemyRenderer = GetComponent<Renderer>();
-        foreach(Material material in defaultMaterials)
-        {
-            defaultMaterials.Add(material);
+            renderer.material = defaultMaterial;
         }
     }
 }
