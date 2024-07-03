@@ -15,6 +15,8 @@ public class Blink : Ability
     [SerializeField]
     private ParticleSystem blinkParticle;
     private Vector3 blinkDestination;
+    private bool isBlinkInterrupted = false;
+    private KeyCode blinkInterruptionKey = KeyCode.F;
     private void Awake() 
     {
         abilityType = AbilityType.Blink;
@@ -33,7 +35,7 @@ public class Blink : Ability
         bool hasEnoughMana = HasEnoughMana();
         if(isReadyToPerform && hasEnoughMana && isAbilitySelected)
         {
-            if(Input.GetMouseButton(1))
+            if(Input.GetMouseButton(1) && !isBlinkInterrupted)
             {
                 RaycastHit hit;
                 if(Physics.Raycast(fpsCam.transform.position, fpsCam.transform.forward, out hit, maxDistance))
@@ -52,23 +54,37 @@ public class Blink : Ability
                 }
                 blinkParticle.transform.position = blinkDestination;
                 blinkParticle.Play();
+
+                if(Input.GetKeyDown(blinkInterruptionKey))
+                {
+                    isBlinkInterrupted = true;
+                }
             }
 
             else if(Input.GetMouseButtonUp(1))
             {
-                CharacterController cc = this.gameObject.GetComponent<CharacterController>();
-                if (cc != null)
+                if(isBlinkInterrupted)
                 {
-                    cc.enabled = false;
-                    this.gameObject.transform.position = blinkDestination;
-                    cc.enabled = true;
+                    isBlinkInterrupted = false;
+                    blinkParticle.Stop();
+                    return;
                 }
                 else
                 {
-                    this.gameObject.transform.position = blinkDestination;
+                    CharacterController cc = this.gameObject.GetComponent<CharacterController>();
+                    if (cc != null)
+                    {
+                        cc.enabled = false;
+                        this.gameObject.transform.position = blinkDestination;
+                        cc.enabled = true;
+                    }
+                    else
+                    {
+                        this.gameObject.transform.position = blinkDestination;
+                    }
+                    blinkParticle.Stop();
+                    base.PerformAbility();
                 }
-                blinkParticle.Stop();
-                base.PerformAbility();
             }
         }
         
