@@ -9,10 +9,6 @@ public class Mana : Stat
         base.Awake();
         statType = StatType.Mana;    
     }
-    protected override void OnStatFinished()
-    {
-        Debug.Log("Mana finished");
-    }
 
     public void OnAbilityUsed(int manaCost)
     {

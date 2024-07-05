@@ -9,8 +9,4 @@ public class Health : Stat
         base.Awake();
         statType = StatType.Health;    
     }
-    protected override void OnStatFinished()
-    {
-        Debug.Log("Health finished");
-    }
 }

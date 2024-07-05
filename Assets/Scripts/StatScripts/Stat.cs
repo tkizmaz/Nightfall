@@ -14,7 +14,8 @@ public class StatChangedEvent : UnityEvent<StatType, int> {}
 
 public class Stat : MonoBehaviour
 {
-    protected StatChangedEvent onStatChanged;
+    public UnityEvent onStatFinished;
+    public StatChangedEvent onStatChanged;
     protected StatType statType;
     private int statValue;
     private int maxStatValue = 100;
@@ -29,30 +30,17 @@ public class Stat : MonoBehaviour
         get { return statValue; }
         set { statValue = value;
               onStatChanged.Invoke(statType, statValue);
+              if(statValue <= 0)
+              {
+                onStatFinished?.Invoke();  
+              }
         }
    }
-
-    protected virtual void OnStatFinished()
-    {
-        if(statValue == 0)
-        {
-            Debug.Log("Stat finished");
-        }
-    }
 
     protected virtual void Awake()
     {
         statValue = maxStatValue;
         onStatChanged = new StatChangedEvent();
-    }
-
-    void Start()
-    {
-        GameObject gameController = GameObject.FindWithTag("GameController");
-        GameUI gameUI = gameController.GetComponent<GameUI>();
-        if(gameUI != null)
-        {
-            onStatChanged.AddListener(gameUI.ChangeStatText);
-        }
+        onStatFinished = new UnityEvent();
     }
 }
