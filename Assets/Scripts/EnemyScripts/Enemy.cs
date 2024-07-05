@@ -152,7 +152,6 @@ public class Enemy : MonoBehaviour
     {
         while(enemyState == EnemyState.Attack)
         {
-            //Randomize the attack animation
             int randomSlash = Random.Range(0, 2);
             string slashAnimation = randomSlash == 0 ? SLASH_ANIMATION : SLASH_ANIMATION_2;
             enemyAnimator.SetTrigger(slashAnimation);
