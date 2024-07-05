@@ -32,13 +32,29 @@ public class Player : MonoBehaviour
 
     void Awake()
     {
+        AssignProperties();
+        AssignInitialPotions();
+        AssignAbilitiesToKeys();
+    }
+
+    private void Start() 
+    {
+        GameObject gameController = GameObject.FindWithTag("GameController");
+        GameUI gameUI = gameController.GetComponent<GameUI>();
+        if(gameUI != null)
+        {
+            health.onStatChanged.AddListener(gameUI.ChangeStatText);
+            mana.onStatChanged.AddListener(gameUI.ChangeStatText);
+        }
+    }
+
+    private void AssignProperties()
+    {
         health = this.gameObject.AddComponent<Health>();
         mana = this.gameObject.AddComponent<Mana>();
         blink = this.gameObject.GetComponent<Blink>();
         bendTime = this.gameObject.GetComponent<BendTime>();
         darkVision = this.gameObject.GetComponent<DarkVision>();
-        AssignInitialPotions();
-        AssignAbilitiesToKeys();
     }
 
     private void AssignInitialPotions()
@@ -106,4 +122,5 @@ public class Player : MonoBehaviour
             }
         }
     }
+    
 }
