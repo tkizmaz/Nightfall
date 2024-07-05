@@ -31,7 +31,7 @@ public class Sword : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Enemy"))
         {
-            Debug.Log("hit enemy");
+            other.gameObject.GetComponent<Enemy>().SetStateToDeath();
         }
     }
 
