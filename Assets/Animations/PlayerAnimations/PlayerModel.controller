@@ -141,7 +141,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: BackSlash
-  m_Speed: 2
+  m_Speed: 1.5
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -373116961842243335}
@@ -336,7 +336,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Slash
-  m_Speed: 2
+  m_Speed: 1.5
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -1006944270257397722}
@@ -445,10 +445,10 @@ AnimatorStateMachine:
     m_Position: {x: 610, y: 110, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -3723287823350524978}
-    m_Position: {x: 610, y: 270, z: 0}
+    m_Position: {x: 750, y: 260, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 3718826326462219547}
-    m_Position: {x: 610, y: -30, z: 0}
+    m_Position: {x: 750, y: -20, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
