@@ -15,6 +15,8 @@ enum EnemyState
 
 public class Enemy : MonoBehaviour
 {
+    private Health health;
+    public Health Health => health;
     private EnemyState enemyState = EnemyState.Idle;
     public float visionRange = 10.0f;
     public float visionAngle = 60.0f;
@@ -24,8 +26,17 @@ public class Enemy : MonoBehaviour
     private Animator enemyAnimator;
     public Transform[] patrolPoints;
     private int currentPatrolIndex = 0;
-    private bool isEnemyAlerted = false;
     public bool IsEnemyAlerted{ get;}
+    [SerializeField]
+    private float attackDelay = 3f;
+    string SLASH_ANIMATION = "Slash";
+    string SLASH_ANIMATION_2 = "ShieldSlash";
+
+    private void Awake() 
+    {
+        health = this.gameObject.AddComponent<Health>();
+        health.onStatFinished.AddListener(SetStateToDeath);
+    }
 
     void Start()
     {
@@ -36,9 +47,12 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
-        CheckPlayerInSight();
-        CheckIfPlayerDisappeared();
-        CheckPatrolDestinationReached();
+        if(enemyState != EnemyState.Dead)
+        {
+            CheckPlayerInSight();
+            CheckIfPlayerDisappeared();
+            CheckPatrolDestinationReached();
+        }
     }
 
     void CheckPlayerInSight()
@@ -56,6 +70,17 @@ public class Enemy : MonoBehaviour
                 {
                     SetEnemyToChasingState();
                     navMeshAgent.SetDestination(player.position);
+                    bool isPlayerInAttackRange = distanceToPlayer <= 3.0f;
+                    if(isPlayerInAttackRange && enemyState != EnemyState.Attack)
+                    {
+                        enemyState = EnemyState.Attack;
+                        StartCoroutine(SetEnemyToAttackState());
+                    }
+                    else
+                    {
+                        enemyAnimator.SetBool("onStance", false);
+                        SetEnemyToChasingState();
+                    }
                 }
                 else
                 {
@@ -69,8 +94,8 @@ public class Enemy : MonoBehaviour
     {
         enemyState = EnemyState.Chase;
         enemyAnimator.SetBool("isRunning", true);
-        navMeshAgent.speed = 5f;
-        isEnemyAlerted = true;
+        navMeshAgent.speed = 4f;
+        navMeshAgent.stoppingDistance = 3.0f;
     }
 
     void CheckIfPlayerDisappeared()
@@ -89,8 +114,8 @@ public class Enemy : MonoBehaviour
     void SetEnemyPatrol()
     {
         enemyState = EnemyState.Patrol;
-        isEnemyAlerted = false;
         navMeshAgent.speed = 1f;
+        navMeshAgent.stoppingDistance = 0.0f;
         enemyAnimator.SetBool("isPatrolling", true);
         SetPatrolDestination();
     }
@@ -114,10 +139,6 @@ public class Enemy : MonoBehaviour
                 SetPatrolDestination();
             }
         }
-        else
-        {
-            Debug.Log("Not in patrol state");
-        }
     }
 
     public void SetStateToDeath()
@@ -125,6 +146,20 @@ public class Enemy : MonoBehaviour
         enemyState = EnemyState.Dead;
         navMeshAgent.enabled = false;
         enemyAnimator.SetTrigger("Death");
+    }
+
+    private IEnumerator SetEnemyToAttackState()
+    {
+        while(enemyState == EnemyState.Attack)
+        {
+            //Randomize the attack animation
+            int randomSlash = Random.Range(0, 2);
+            string slashAnimation = randomSlash == 0 ? SLASH_ANIMATION : SLASH_ANIMATION_2;
+            enemyAnimator.SetTrigger(slashAnimation);
+            yield return new WaitForSeconds(attackDelay);
+            enemyAnimator.SetBool("onStance", true);
+            
+        }
     }
 
 }
