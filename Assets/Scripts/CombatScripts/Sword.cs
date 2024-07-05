@@ -31,7 +31,7 @@ public class Sword : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Enemy"))
         {
-            other.gameObject.GetComponent<Enemy>().SetStateToDeath();
+            CombatManager.instance.DealDamage(other.gameObject.GetComponent<Enemy>(), 30);
         }
     }
 
