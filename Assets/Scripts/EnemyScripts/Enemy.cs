@@ -9,7 +9,8 @@ enum EnemyState
     Idle,
     Patrol,
     Chase,
-    Attack
+    Attack,
+    Dead
 }
 
 public class Enemy : MonoBehaviour
@@ -117,6 +118,13 @@ public class Enemy : MonoBehaviour
         {
             Debug.Log("Not in patrol state");
         }
+    }
+
+    public void SetStateToDeath()
+    {
+        enemyState = EnemyState.Dead;
+        navMeshAgent.enabled = false;
+        enemyAnimator.SetTrigger("Death");
     }
 
 }
