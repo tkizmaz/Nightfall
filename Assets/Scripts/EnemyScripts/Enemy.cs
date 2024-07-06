@@ -202,6 +202,7 @@ public class Enemy : MonoBehaviour
 
     public void PlayKickFinisherEnemy()
     {
+        enemyState = EnemyState.Dead;
         navMeshAgent.isStopped = true;
         enemyAnimator.SetTrigger("KickFinisher");
     }
