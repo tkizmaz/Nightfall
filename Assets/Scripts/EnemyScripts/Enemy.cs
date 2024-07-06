@@ -33,6 +33,8 @@ public class Enemy : MonoBehaviour
     string SLASH_ANIMATION_2 = "ShieldSlash";
     bool hasPlayerSeen = false;
     private bool isAttackFinished = false;
+    [SerializeField]
+    private EnemySword enemySword;
 
     private void Awake() 
     {
@@ -171,8 +173,10 @@ public class Enemy : MonoBehaviour
 
             isAttackFinished = false;
             enemyAnimator.SetTrigger(slashAnimation);
+            enemySword.SetSwordCollider(true);
 
             yield return new WaitUntil(() => isAttackFinished);
+            enemySword.SetSwordCollider(false);
 
             if(enemyState != EnemyState.Attack)
             {
@@ -194,5 +198,11 @@ public class Enemy : MonoBehaviour
     public void SetAttackFinished()
     {
         isAttackFinished = true;
+    }
+
+    public void PlayKickFinisherEnemy()
+    {
+        navMeshAgent.isStopped = true;
+        enemyAnimator.SetTrigger("KickFinisher");
     }
 }
