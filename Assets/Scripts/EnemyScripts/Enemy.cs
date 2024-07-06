@@ -28,9 +28,10 @@ public class Enemy : MonoBehaviour
     private int currentPatrolIndex = 0;
     public bool IsEnemyAlerted{ get;}
     [SerializeField]
-    private float attackDelay = 3f;
+    private float attackDelay = 2f;
     string SLASH_ANIMATION = "Slash";
     string SLASH_ANIMATION_2 = "ShieldSlash";
+    bool hasPlayerSeen = false;
 
     private void Awake() 
     {
@@ -68,23 +69,30 @@ public class Enemy : MonoBehaviour
             {
                 if (!Physics.Raycast(transform.position, directionToPlayer.normalized, distanceToPlayer, obstacleMask))
                 {
-                    SetEnemyToChasingState();
-                    navMeshAgent.SetDestination(player.position);
-                    bool isPlayerInAttackRange = distanceToPlayer <= 3.0f;
-                    if(isPlayerInAttackRange && enemyState != EnemyState.Attack)
+                    if(!hasPlayerSeen)
                     {
-                        enemyState = EnemyState.Attack;
-                        StartCoroutine(SetEnemyToAttackState());
+                        Debug.Log("Player seen");
+                        CheckForPlayerSeen();
+                    }
+                    bool isPlayerInAttackRange = distanceToPlayer <= 3.0f;
+                    if(isPlayerInAttackRange)
+                    {
+                        if(enemyState != EnemyState.Attack)
+                        {
+                            enemyState = EnemyState.Attack;
+                            StartCoroutine(SetEnemyToAttackState());
+                        }
                     }
                     else
                     {
                         enemyAnimator.SetBool("onStance", false);
+                        navMeshAgent.SetDestination(player.position);
                         SetEnemyToChasingState();
                     }
                 }
                 else
                 {
-                    enemyState = EnemyState.Patrol;
+                    SetEnemyPatrol();
                 }
             }
         }
@@ -105,8 +113,10 @@ public class Enemy : MonoBehaviour
             float distanceToPlayer = Vector3.Distance(transform.position, player.position);
             if(distanceToPlayer > visionRange)
             {
+                AudioManager.instance.PlayCowardSfx();
                 SetEnemyPatrol();
                 enemyAnimator.SetBool("isRunning", false);
+                hasPlayerSeen = false;
             }
         }
     }
@@ -150,15 +160,29 @@ public class Enemy : MonoBehaviour
 
     private IEnumerator SetEnemyToAttackState()
     {
-        while(enemyState == EnemyState.Attack)
+        navMeshAgent.isStopped = true;
+        while (enemyState == EnemyState.Attack)
         {
             int randomSlash = Random.Range(0, 2);
             string slashAnimation = randomSlash == 0 ? SLASH_ANIMATION : SLASH_ANIMATION_2;
-            enemyAnimator.SetTrigger(slashAnimation);
-            yield return new WaitForSeconds(attackDelay);
             enemyAnimator.SetBool("onStance", true);
-            
+            enemyAnimator.SetTrigger(slashAnimation);
+
+            yield return new WaitForSeconds(2f);
+
+            if(enemyState != EnemyState.Attack)
+            {
+                navMeshAgent.isStopped = false;
+                break;
+            }
+            yield return new WaitForSeconds(attackDelay);
         }
+        navMeshAgent.isStopped = false;
     }
 
+    private void CheckForPlayerSeen()
+    {
+        hasPlayerSeen = true;
+        AudioManager.instance.PlayPlayerDetectedSfx();
+    }
 }
