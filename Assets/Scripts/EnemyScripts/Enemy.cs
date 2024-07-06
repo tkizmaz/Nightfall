@@ -32,6 +32,7 @@ public class Enemy : MonoBehaviour
     string SLASH_ANIMATION = "Slash";
     string SLASH_ANIMATION_2 = "ShieldSlash";
     bool hasPlayerSeen = false;
+    private bool isAttackFinished = false;
 
     private void Awake() 
     {
@@ -41,6 +42,7 @@ public class Enemy : MonoBehaviour
 
     void Start()
     {
+
         navMeshAgent = GetComponent<NavMeshAgent>();
         enemyAnimator = GetComponent<Animator>();
         SetEnemyPatrol();
@@ -166,9 +168,11 @@ public class Enemy : MonoBehaviour
             int randomSlash = Random.Range(0, 2);
             string slashAnimation = randomSlash == 0 ? SLASH_ANIMATION : SLASH_ANIMATION_2;
             enemyAnimator.SetBool("onStance", true);
+
+            isAttackFinished = false;
             enemyAnimator.SetTrigger(slashAnimation);
 
-            yield return new WaitForSeconds(2f);
+            yield return new WaitUntil(() => isAttackFinished);
 
             if(enemyState != EnemyState.Attack)
             {
@@ -184,5 +188,11 @@ public class Enemy : MonoBehaviour
     {
         hasPlayerSeen = true;
         AudioManager.instance.PlayPlayerDetectedSfx();
+    }
+    
+
+    public void SetAttackFinished()
+    {
+        isAttackFinished = true;
     }
 }
