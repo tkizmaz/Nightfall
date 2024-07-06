@@ -44,9 +44,8 @@ public class Sword : MonoBehaviour
 
     private void CheckAttack()
     {
-        if(Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0))
         {
-            // Raycast işlemi
             RaycastHit hit;
             Vector3 rayOrigin = Camera.main.transform.position;
             Vector3 rayDirection = Camera.main.transform.forward;
@@ -54,17 +53,24 @@ public class Sword : MonoBehaviour
             {
                 if (hit.collider.gameObject.CompareTag("Enemy"))
                 {
-                    Debug.Log("Finisher");
-                    return;
+                    Vector3 playerPosition = Camera.main.transform.position;
+                    Vector3 enemyPosition = hit.collider.gameObject.transform.position;
+                    Vector3 directionToPlayer = (playerPosition - enemyPosition).normalized;
+                    Vector3 enemyForward = hit.collider.gameObject.transform.forward;
+                    float dotProduct = Vector3.Dot(enemyForward, directionToPlayer);
+                    if (dotProduct < -0.5f)
+                    {
+                        FinisherAnimationController.instance.PlayFinisherAnimation(playerAnimationController, hit.collider.gameObject.GetComponent<Enemy>());
+                        return;
+                    }
                 }
             }
-            else
-            {
-                AudioManager.instance.PlaySwordSwingSfx();
-                swordCollider.enabled = true;
-                onPlayerSlash.Invoke();
             
-            }
+            // Düşman bulunamadı veya mesafe uygun değilse kılıç sesi çal ve saldırı yap
+            AudioManager.instance.PlaySwordSwingSfx();
+            swordCollider.enabled = true;
+            onPlayerSlash.Invoke();
         }
     }
+
 }
