@@ -3,16 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+enum SwordState
+{
+    Idle,
+    Attacking
+}
+
 public class Sword : MonoBehaviour
 {
     private BoxCollider swordCollider;
     public UnityEvent onPlayerSlash;
     public PlayerAnimationController playerAnimationController;
     private float finisherRange = 1f;
+    private SwordState swordState;
 
     // Start is called before the first frame update
     void Start()
     {
+        swordState = SwordState.Idle;
         swordCollider = this.gameObject.GetComponent<BoxCollider>();
         swordCollider.enabled = false;
         if(playerAnimationController != null)
@@ -32,19 +40,25 @@ public class Sword : MonoBehaviour
         {
             AudioManager.instance.PlaySwordHitEnemySfx();
             CombatManager.instance.DealDamage(other.gameObject.GetComponent<Enemy>(), 30);
-            StartCoroutine(DisableCollider());
         }
     }
 
-    private IEnumerator DisableCollider()
+    private IEnumerator AttackRoutine()
     {
-        yield return new WaitForSeconds(0.5f);
+        AudioManager.instance.PlaySwordSwingSfx();
+        swordState = SwordState.Attacking;
+        swordCollider.enabled = true;
+        onPlayerSlash.Invoke();
+
+        yield return new WaitUntil(() => playerAnimationController.isAttackFinished);
+        
         swordCollider.enabled = false;
+        swordState = SwordState.Idle;
     }
 
     private void CheckAttack()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && swordState == SwordState.Idle)
         {
             RaycastHit hit;
             Vector3 rayOrigin = Camera.main.transform.position;
@@ -66,11 +80,8 @@ public class Sword : MonoBehaviour
                 }
             }
             
-            // Düşman bulunamadı veya mesafe uygun değilse kılıç sesi çal ve saldırı yap
-            AudioManager.instance.PlaySwordSwingSfx();
-            swordCollider.enabled = true;
-            onPlayerSlash.Invoke();
+            StartCoroutine(AttackRoutine());
+
         }
     }
-
 }
