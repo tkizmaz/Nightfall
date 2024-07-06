@@ -25,6 +25,7 @@ public class Potion : Tool
         int restoredValue = valueToRestore > playerStat.MaxStatValue ? playerStat.MaxStatValue : valueToRestore;
         playerStat.StatValue = restoredValue;
         OnPotionUse.Invoke(statType, player.GetPotionCount(statType));
+        AudioManager.instance.PlaySwallowSfx();
     }
 
     protected virtual void Start()
@@ -35,7 +36,6 @@ public class Potion : Tool
         if(gameUI != null)
         {
             OnPotionUse.AddListener(gameUI.ChangePotionCount);
-            OnPotionUse.AddListener(audioManager.PlaySwallowSfx);
         }
     }
 
