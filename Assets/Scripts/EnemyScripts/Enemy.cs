@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-enum EnemyState
+public enum EnemyState
 {
     Alerted,
     Idle,
@@ -35,6 +35,8 @@ public class Enemy : MonoBehaviour
     private bool isAttackFinished = false;
     [SerializeField]
     private EnemySword enemySword;
+
+    public EnemyState EnemyState => enemyState;
 
     private void Awake() 
     {
@@ -97,6 +99,17 @@ public class Enemy : MonoBehaviour
                 {
                     SetEnemyPatrol();
                 }
+            }
+
+            else if(player.GetComponent<PlayerMovement>().PlayerState != PlayerState.Idle && player.GetComponent<PlayerMovement>().PlayerState != PlayerState.Walking)
+            {
+                if(!hasPlayerSeen)
+                {
+                    CheckForPlayerSeen();
+                }
+                enemyAnimator.SetBool("onStance", false);                
+                navMeshAgent.SetDestination(player.position);
+                SetEnemyToChasingState();
             }
         }
     }
