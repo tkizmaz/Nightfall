@@ -4,6 +4,12 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.VFX;
 
+enum MovementState
+{
+    Immobile,
+    Mobile
+}
+
 [System.Serializable]
 public class PlayerWalkingEvent : UnityEvent<bool> {}
 
@@ -32,6 +38,7 @@ public class PlayerMovement : MonoBehaviour
     private LayerMask groundMask;
     private bool isGrounded;
     public PlayerWalkingEvent onPlayerWalk;
+    private MovementState movementState;
     
     void Update()
     {
@@ -41,27 +48,31 @@ public class PlayerMovement : MonoBehaviour
             velocity.y = -2f;
         }
 
-        float x = Input.GetAxis("Horizontal");
-        float z = Input.GetAxis("Vertical");
-
-        Vector3 move = transform.right * x + transform.forward * z;
-        controller.Move(move * speed * Time.deltaTime);
-
-        if(move != Vector3.zero)
+        if(movementState == MovementState.Mobile)
         {
-            onPlayerWalk.Invoke(true);
+            float x = Input.GetAxis("Horizontal");
+            float z = Input.GetAxis("Vertical");
+
+            Vector3 move = transform.right * x + transform.forward * z;
+            controller.Move(move * speed * Time.deltaTime);
+
+            if(move != Vector3.zero)
+            {
+                onPlayerWalk.Invoke(true);
+            }
+            else
+            {
+                onPlayerWalk.Invoke(false);
+            }
+            velocity.y += (Physics.gravity.y * 1.5f) * Time.deltaTime;
+            controller.Move(velocity * Time.deltaTime);
         }
-        else
-        {
-            onPlayerWalk.Invoke(false);
-        }
+        
 
         CheckJump();
         CheckSprint();
         CheckCrouch();
         CheckPeek();
-        velocity.y += (Physics.gravity.y * 1.5f) * Time.deltaTime;
-        controller.Move(velocity * Time.deltaTime);
     }
 
     private void CheckJump()
@@ -101,6 +112,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Start() 
     {
+        movementState = MovementState.Mobile;
         PlayerAnimationController playerAnimationController = this.gameObject.GetComponent<PlayerAnimationController>();
         if(playerAnimationController != null)
         {
@@ -150,5 +162,18 @@ public class PlayerMovement : MonoBehaviour
         }
     }
     
+    
 }
+
+    public void ImmobilizePlayer()
+    {
+        movementState = MovementState.Immobile;
+        Debug.Log("Player is immobile");
+    }
+
+    public void MobilizePlayer()
+    {
+        movementState = MovementState.Mobile;
+        Debug.Log("Player is mobile");
+    }
 }
