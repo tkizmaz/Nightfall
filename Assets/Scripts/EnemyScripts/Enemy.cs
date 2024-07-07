@@ -195,9 +195,7 @@ public class Enemy : MonoBehaviour
                 navMeshAgent.isStopped = false;
                 break;
             }
-            Debug.Log("Attack Delay");
             yield return new WaitForSeconds(attackDelay);
-            Debug.Log("Attack Delay Finished");
         }
         navMeshAgent.isStopped = false;
     }
