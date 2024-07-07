@@ -21,6 +21,9 @@ public enum PlayerState
 [System.Serializable]
 public class PlayerWalkingEvent : UnityEvent<bool> {}
 
+[System.Serializable]
+public class PlayerSprintEvent : UnityEvent<bool> {}
+
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField]
@@ -46,9 +49,11 @@ public class PlayerMovement : MonoBehaviour
     private LayerMask groundMask;
     private bool isGrounded;
     public PlayerWalkingEvent onPlayerWalk;
+    public PlayerSprintEvent onPlayerSprint;
     private MovementState movementState;
     private PlayerState playerState;
     public PlayerState PlayerState => playerState;
+    PlayerAnimationController playerAnimationController;
     
     void Update()
     {
@@ -101,14 +106,20 @@ public class PlayerMovement : MonoBehaviour
         {
             speed = sprintSpeed;
             if (playerState != PlayerState.Idle)
+            {
                 playerState = PlayerState.Sprinting;
+                onPlayerSprint.Invoke(true);
+            }
         }
 
         else if(Input.GetKeyUp(KeyCode.LeftShift))
         {
             speed = 2f;
             if (playerState == PlayerState.Sprinting)
+            {
                 playerState = PlayerState.Walking;
+                onPlayerSprint.Invoke(false);
+            }
         }
     }
 
@@ -133,10 +144,11 @@ public class PlayerMovement : MonoBehaviour
     {
         movementState = MovementState.Mobile;
         playerState = PlayerState.Idle;
-        PlayerAnimationController playerAnimationController = this.gameObject.GetComponent<PlayerAnimationController>();
+        playerAnimationController = this.gameObject.GetComponent<PlayerAnimationController>();
         if(playerAnimationController != null)
         {
             onPlayerWalk.AddListener(playerAnimationController.PlayWalkAnimation);
+            onPlayerSprint.AddListener(playerAnimationController.PlaySprintAnimation);
         }
     }
 
