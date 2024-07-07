@@ -14,7 +14,6 @@ public class CameraController : MonoBehaviour
     [HideInInspector] public float relativeYaw = 0f;
     public float xRotation = 0f;
 
-
     void OnEnable()
     {
         Cursor.lockState = CursorLockMode.Locked;

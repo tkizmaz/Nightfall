@@ -7,6 +7,8 @@ public class CombatManager : MonoBehaviour
     [SerializeField]
     private Player player;
     public static CombatManager instance;
+    [SerializeField]
+    CameraEffectController cameraEffectController;
 
     private void Awake() 
     {
@@ -28,5 +30,6 @@ public class CombatManager : MonoBehaviour
     public void DealDamageToPlayer(int damage)
     {
         player.Health.StatValue -= damage;
+        cameraEffectController.ApplyVignetteEffect();
     }
 }
