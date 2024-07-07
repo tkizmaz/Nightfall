@@ -27,14 +27,14 @@ public class Enemy : MonoBehaviour
     public Transform[] patrolPoints;
     private int currentPatrolIndex = 0;
     public bool IsEnemyAlerted{ get;}
-    [SerializeField]
-    private float attackDelay = 2f;
+    private float attackDelay = 0.25f;
     string SLASH_ANIMATION = "Slash";
     string SLASH_ANIMATION_2 = "ShieldSlash";
     bool hasPlayerSeen = false;
     private bool isAttackFinished = false;
     [SerializeField]
     private EnemySword enemySword;
+    private EnemySoundManager enemySoundManager;
 
     public EnemyState EnemyState => enemyState;
 
@@ -46,7 +46,7 @@ public class Enemy : MonoBehaviour
 
     void Start()
     {
-
+        enemySoundManager = GetComponent<EnemySoundManager>();
         navMeshAgent = GetComponent<NavMeshAgent>();
         enemyAnimator = GetComponent<Animator>();
         SetEnemyPatrol();
@@ -195,7 +195,9 @@ public class Enemy : MonoBehaviour
                 navMeshAgent.isStopped = false;
                 break;
             }
+            Debug.Log("Attack Delay");
             yield return new WaitForSeconds(attackDelay);
+            Debug.Log("Attack Delay Finished");
         }
         navMeshAgent.isStopped = false;
     }

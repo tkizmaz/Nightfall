@@ -30,6 +30,7 @@ public class Ability : MonoBehaviour
     public AbilityUsedEvent abilityUsed;
     public AbilityStatusEvent isAbilityReady;
     public AbilitySelectionEvent isAbilitySelectedEvent;
+    PlayerSoundManager playerSoundManager;
     
     public int ManaCost
     {
@@ -53,7 +54,7 @@ public class Ability : MonoBehaviour
 
     protected virtual void PerformAbility()
     {
-        AudioManager.instance.PlayAbilitySfx(abilityType);
+        playerSoundManager.PlayAbilitySfx(abilityType);
         isReadyToPerform = false;
         isAbilityReady.Invoke(abilityType, isReadyToPerform, isAbilitySelected);
         abilityUsed.Invoke(manaCost);
@@ -73,6 +74,7 @@ public class Ability : MonoBehaviour
 
     private void Start() 
     {
+        playerSoundManager = this.gameObject.GetComponent<PlayerSoundManager>();
         Mana playerMana = this.gameObject.GetComponent<Mana>();
         if(playerMana != null)
         {
@@ -84,7 +86,6 @@ public class Ability : MonoBehaviour
             isAbilityReady.AddListener(gameUI.ChangeAbilityStatus);
             isAbilitySelectedEvent.AddListener(gameUI.ChangeAbilitySelection);
         }
-
     }
 
     protected bool HasEnoughMana()

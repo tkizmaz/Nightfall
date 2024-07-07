@@ -18,13 +18,6 @@ public class AudioManager : MonoBehaviour
     private AudioClip cowardSound;
     [SerializeField]
     private AudioClip kickSound;
-    [SerializeField]
-    private AudioClip blinkSound;
-    [SerializeField]
-    private AudioClip bendTimeSound;
-    [SerializeField]
-    private AudioClip darkVisionSound;
-    private Dictionary<AbilityType, AudioClip> abilitySounds = new Dictionary<AbilityType, AudioClip>();
 
     public static AudioManager instance;
 
@@ -38,18 +31,6 @@ public class AudioManager : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
-    }
-
-    private void Start() 
-    {
-        AssignAbilitiesToSounds();
-    }
-
-    private void AssignAbilitiesToSounds()
-    {
-        abilitySounds.Add(AbilityType.Blink, blinkSound);
-        abilitySounds.Add(AbilityType.BendTime, bendTimeSound);
-        abilitySounds.Add(AbilityType.DarkVision, darkVisionSound);
     }
 
     public void PlaySwallowSfx() 
@@ -87,12 +68,5 @@ public class AudioManager : MonoBehaviour
         sfxSource.clip = kickSound;
         sfxSource.Play();   
     }
-
-    public void PlayAbilitySfx(AbilityType abilityType)
-    {
-        sfxSource.clip = abilitySounds[abilityType];
-        sfxSource.Play();
-    }
-
 
 }

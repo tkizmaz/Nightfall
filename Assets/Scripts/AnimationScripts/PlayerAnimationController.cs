@@ -19,6 +19,11 @@ public class PlayerAnimationController : MonoBehaviour
         playerAnimator.SetBool("isWalking", isWalking);
     }
 
+    public void PlaySprintAnimation(bool isSprinting)
+    {
+        playerAnimator.SetBool("isSprinting", isSprinting);
+    }
+
     public void PlaySlashAnimation()
     {
         isAttackFinished = false;

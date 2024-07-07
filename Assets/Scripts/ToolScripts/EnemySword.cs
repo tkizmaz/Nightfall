@@ -5,7 +5,8 @@ using UnityEngine;
 public class EnemySword : MonoBehaviour
 {
     private BoxCollider swordCollider;
-
+    [SerializeField]
+    private EnemySoundManager enemySoundManager;
     // Start is called before the first frame update
     void Start()
     {
@@ -17,7 +18,9 @@ public class EnemySword : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
+            enemySoundManager.PlaySwordHitPlayerSfx();
             CombatManager.instance.DealDamageToPlayer(20);
+
         }
     }
 
