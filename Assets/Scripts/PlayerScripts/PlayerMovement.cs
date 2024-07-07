@@ -10,6 +10,13 @@ enum MovementState
     Mobile
 }
 
+public enum PlayerState
+{
+    Idle,
+    Walking,
+    Crouching,
+}
+
 [System.Serializable]
 public class PlayerWalkingEvent : UnityEvent<bool> {}
 
@@ -39,9 +46,12 @@ public class PlayerMovement : MonoBehaviour
     private bool isGrounded;
     public PlayerWalkingEvent onPlayerWalk;
     private MovementState movementState;
+    private PlayerState playerState;
+    public PlayerState PlayerState => playerState;
     
     void Update()
     {
+        Debug.Log(playerState);
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
         if(isGrounded && velocity.y < 0)
         {
@@ -59,16 +69,17 @@ public class PlayerMovement : MonoBehaviour
             if(move != Vector3.zero)
             {
                 onPlayerWalk.Invoke(true);
+                playerState = (speed == sprintSpeed) ? PlayerState.Sprinting : (speed == crouchSpeed) ? PlayerState.Crouching : PlayerState.Walking;
             }
             else
             {
                 onPlayerWalk.Invoke(false);
+                playerState = PlayerState.Idle;
             }
             velocity.y += (Physics.gravity.y * 1.5f) * Time.deltaTime;
             controller.Move(velocity * Time.deltaTime);
         }
         
-
         CheckJump();
         CheckSprint();
         CheckCrouch();
@@ -88,11 +99,15 @@ public class PlayerMovement : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.LeftShift))
         {
             speed = sprintSpeed;
+            if (playerState != PlayerState.Idle)
+                playerState = PlayerState.Sprinting;
         }
 
         else if(Input.GetKeyUp(KeyCode.LeftShift))
         {
             speed = 2f;
+            if (playerState == PlayerState.Sprinting)
+                playerState = PlayerState.Walking;
         }
     }
 
@@ -101,18 +116,22 @@ public class PlayerMovement : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.LeftControl))
         {
             speed = crouchSpeed;
+            if (playerState != PlayerState.Idle)
+                playerState = PlayerState.Crouching;
         }
 
         else if(Input.GetKeyUp(KeyCode.LeftControl))
         {
             speed = 2f;
+            if (playerState == PlayerState.Crouching)
+                playerState = PlayerState.Walking;
         }
     }
-
 
     private void Start() 
     {
         movementState = MovementState.Mobile;
+        playerState = PlayerState.Idle;
         PlayerAnimationController playerAnimationController = this.gameObject.GetComponent<PlayerAnimationController>();
         if(playerAnimationController != null)
         {
@@ -121,53 +140,52 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private void CheckPeek()
-{
-    if (Input.GetKeyDown(KeyCode.Q))
     {
-        if (!isPeekingLeft)
+        if (Input.GetKeyDown(KeyCode.Q))
         {
-            initialZRotation = transform.rotation.eulerAngles.z;
-            initialYRotation = transform.rotation.eulerAngles.y;
-            transform.Rotate(0, 0, 10f);
-            isPeekingLeft = true;
-            isPeekingRight = false;
+            if (!isPeekingLeft)
+            {
+                initialZRotation = transform.rotation.eulerAngles.z;
+                initialYRotation = transform.rotation.eulerAngles.y;
+                transform.Rotate(0, 0, 10f);
+                isPeekingLeft = true;
+                isPeekingRight = false;
+            }
         }
-    }
-    else if (Input.GetKeyUp(KeyCode.Q))
-    {
-        if (isPeekingLeft)
+        else if (Input.GetKeyUp(KeyCode.Q))
         {
-            transform.rotation = Quaternion.Euler(0, initialYRotation, initialZRotation);
-            isPeekingLeft = false;
+            if (isPeekingLeft)
+            {
+                transform.rotation = Quaternion.Euler(0, initialYRotation, initialZRotation);
+                isPeekingLeft = false;
+            }
         }
-    }
 
-    if (Input.GetKeyDown(KeyCode.E))
-    {
-        if (!isPeekingRight)
+        if (Input.GetKeyDown(KeyCode.E))
         {
-            initialZRotation = transform.rotation.eulerAngles.z;
-            initialYRotation = transform.rotation.eulerAngles.y;
-            transform.Rotate(0, 0, -10f);
-            isPeekingRight = true;
-            isPeekingLeft = false;
+            if (!isPeekingRight)
+            {
+                initialZRotation = transform.rotation.eulerAngles.z;
+                initialYRotation = transform.rotation.eulerAngles.y;
+                transform.Rotate(0, 0, -10f);
+                isPeekingRight = true;
+                isPeekingLeft = false;
+            }
+        }
+        else if (Input.GetKeyUp(KeyCode.E))
+        {
+            if (isPeekingRight)
+            {
+                transform.rotation = Quaternion.Euler(0, initialYRotation, initialZRotation);
+                isPeekingRight = false;
+            }
         }
     }
-    else if (Input.GetKeyUp(KeyCode.E))
-    {
-        if (isPeekingRight)
-        {
-            transform.rotation = Quaternion.Euler(0, initialYRotation, initialZRotation);
-            isPeekingRight = false;
-        }
-    }
-    
-    
-}
 
     public void ImmobilizePlayer()
     {
         movementState = MovementState.Immobile;
+        playerState = PlayerState.Idle;
     }
 
     public void MobilizePlayer()

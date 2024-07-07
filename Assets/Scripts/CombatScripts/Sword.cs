@@ -63,7 +63,7 @@ public class Sword : MonoBehaviour
             RaycastHit hit;
             Vector3 rayOrigin = Camera.main.transform.position;
             Vector3 rayDirection = Camera.main.transform.forward;
-            if (Physics.Raycast(rayOrigin, rayDirection, out hit, finisherRange))
+            if (Physics.Raycast(rayOrigin, rayDirection, out hit, finisherRange) && hit.collider.gameObject.GetComponent<Enemy>().EnemyState == EnemyState.Patrol)
             {
                 if (hit.collider.gameObject.CompareTag("Enemy"))
                 {
@@ -72,7 +72,6 @@ public class Sword : MonoBehaviour
                     Vector3 directionToPlayer = (playerPosition - enemyPosition).normalized;
                     Vector3 enemyForward = hit.collider.gameObject.transform.forward;
                     float dotProduct = Vector3.Dot(enemyForward, directionToPlayer);
-                    Debug.Log(dotProduct);
                     if (dotProduct > -0.7f)
                     {
                         FinisherAnimationController.instance.PlayFinisherAnimation(playerAnimationController, hit.collider.gameObject.GetComponent<Enemy>());
