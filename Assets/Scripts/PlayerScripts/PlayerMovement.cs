@@ -168,12 +168,10 @@ public class PlayerMovement : MonoBehaviour
     public void ImmobilizePlayer()
     {
         movementState = MovementState.Immobile;
-        Debug.Log("Player is immobile");
     }
 
     public void MobilizePlayer()
     {
         movementState = MovementState.Mobile;
-        Debug.Log("Player is mobile");
     }
 }
