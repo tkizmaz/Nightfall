@@ -16,6 +16,8 @@ public class AudioManager : MonoBehaviour
     private AudioClip playerDetectedSound;
     [SerializeField]
     private AudioClip cowardSound;
+    [SerializeField]
+    private AudioClip kickSound;
 
 
     public static AudioManager instance;
@@ -59,6 +61,12 @@ public class AudioManager : MonoBehaviour
     public void PlayCowardSfx()
     {
         sfxSource.clip = cowardSound;
+        sfxSource.Play();   
+    }
+
+    public void PlayKickSfx()
+    {
+        sfxSource.clip = kickSound;
         sfxSource.Play();   
     }
 
