@@ -15,6 +15,7 @@ public enum PlayerState
     Idle,
     Walking,
     Crouching,
+    Sprinting
 }
 
 [System.Serializable]
