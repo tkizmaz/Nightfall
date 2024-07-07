@@ -36,4 +36,20 @@ public class PlayerAnimationController : MonoBehaviour
     {
         isAttackFinished = true;
     }
+
+    public void KickSfxRoutine()
+    {
+        AudioManager.instance.PlayKickSfx();
+    }
+
+    public void SwordSwingSfxRoutine()
+    {
+        AudioManager.instance.PlaySwordSwingSfx();
+    }
+
+    public void SwordHitEnemySfxRoutine()
+    {
+        AudioManager.instance.PlaySwordHitEnemySfx();
+    }
+
 }
