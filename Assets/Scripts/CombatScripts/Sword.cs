@@ -72,7 +72,8 @@ public class Sword : MonoBehaviour
                     Vector3 directionToPlayer = (playerPosition - enemyPosition).normalized;
                     Vector3 enemyForward = hit.collider.gameObject.transform.forward;
                     float dotProduct = Vector3.Dot(enemyForward, directionToPlayer);
-                    if (dotProduct < -0.5f)
+                    Debug.Log(dotProduct);
+                    if (dotProduct > -0.7f)
                     {
                         FinisherAnimationController.instance.PlayFinisherAnimation(playerAnimationController, hit.collider.gameObject.GetComponent<Enemy>());
                         return;

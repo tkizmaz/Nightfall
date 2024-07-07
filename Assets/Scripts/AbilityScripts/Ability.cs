@@ -53,6 +53,7 @@ public class Ability : MonoBehaviour
 
     protected virtual void PerformAbility()
     {
+        AudioManager.instance.PlayAbilitySfx(abilityType);
         isReadyToPerform = false;
         isAbilityReady.Invoke(abilityType, isReadyToPerform, isAbilitySelected);
         abilityUsed.Invoke(manaCost);
