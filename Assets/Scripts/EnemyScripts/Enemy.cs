@@ -75,7 +75,6 @@ public class Enemy : MonoBehaviour
                 {
                     if(!hasPlayerSeen)
                     {
-                        Debug.Log("Player seen");
                         CheckForPlayerSeen();
                     }
                     bool isPlayerInAttackRange = distanceToPlayer <= 3.0f;
