@@ -30,6 +30,6 @@ public class CombatManager : MonoBehaviour
     public void DealDamageToPlayer(int damage)
     {
         player.Health.StatValue -= damage;
-        cameraEffectController.ApplyVignetteEffect();
+        cameraEffectController.ApplyOnDamageEffects();
     }
 }

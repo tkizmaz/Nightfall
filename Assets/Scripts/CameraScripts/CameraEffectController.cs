@@ -8,10 +8,12 @@ public class CameraEffectController : MonoBehaviour
     private PostProcessVolume volume;
     private Vignette vignette;
     private float intensity = 0f;
+    private Camera mainCamera;
 
     // Start is called before the first frame update
     void Start()
     {
+        mainCamera = GetComponentInChildren<Camera>();
         volume.profile.TryGetSettings(out vignette);
         if(!vignette)
         {
@@ -23,9 +25,20 @@ public class CameraEffectController : MonoBehaviour
         }
     }
 
+    public void ApplyOnDamageEffects()
+    {
+        ApplyVignetteEffect();
+        ShakeCameraEffect();
+    }
+
     public void ApplyVignetteEffect()
     {
         StartCoroutine(ApplyVignette());
+    }
+
+    public void ShakeCameraEffect()
+    {
+        StartCoroutine(ShakeCamera());
     }
     
     private IEnumerator ApplyVignette()
@@ -47,5 +60,25 @@ public class CameraEffectController : MonoBehaviour
 
         vignette.enabled.Override(false);
         yield break;
+    }
+
+    private IEnumerator ShakeCamera()
+    {
+        Vector3 originalPos = mainCamera.transform.localPosition;
+        float elapsed = 0.0f;
+
+        float duration = 0.1f;
+        float magnitude = 0.1f;
+        while(elapsed < duration)
+        {
+            float x = Random.Range(-0.25f, 0.25f) * magnitude;
+            float y = Random.Range(-0.5f, 0.5f) * magnitude;
+
+            mainCamera.transform.localPosition = new Vector3(x, originalPos.y + y, originalPos.z);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        mainCamera.transform.localPosition = originalPos;
     }
 }
