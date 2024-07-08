@@ -15,7 +15,8 @@ public enum PlayerState
     Idle,
     Walking,
     Crouching,
-    Sprinting
+    Sprinting,
+    Jumping
 }
 
 [System.Serializable]
@@ -50,6 +51,7 @@ public class PlayerMovement : MonoBehaviour
     private bool isGrounded;
     public PlayerWalkingEvent onPlayerWalk;
     public PlayerSprintEvent onPlayerSprint;
+    public UnityEvent onPlayerJump;
     private MovementState movementState;
     private PlayerState playerState;
     public PlayerState PlayerState => playerState;
@@ -61,6 +63,10 @@ public class PlayerMovement : MonoBehaviour
         if(isGrounded && velocity.y < 0)
         {
             velocity.y = -2f;
+            if (playerState == PlayerState.Jumping)
+            {
+                playerState = PlayerState.Idle;
+            }
         }
 
         if(movementState == MovementState.Mobile)
@@ -97,6 +103,8 @@ public class PlayerMovement : MonoBehaviour
         if(Input.GetButtonDown("Jump") && isGrounded)
         {
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * Physics.gravity.y);
+            playerState = PlayerState.Jumping;
+            onPlayerJump.Invoke();
         }
     }
 
@@ -149,6 +157,7 @@ public class PlayerMovement : MonoBehaviour
         {
             onPlayerWalk.AddListener(playerAnimationController.PlayWalkAnimation);
             onPlayerSprint.AddListener(playerAnimationController.PlaySprintAnimation);
+            onPlayerJump.AddListener(playerAnimationController.PlayJumpAnimation);
         }
     }
 

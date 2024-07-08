@@ -32,6 +32,11 @@ public class PlayerAnimationController : MonoBehaviour
         playerAnimator.SetTrigger(slashAnimation);
     }
 
+    public void PlayJumpAnimation()
+    {
+        playerAnimator.SetTrigger("Jump");
+    }
+
     public void PlayKickFinisher()
     {
         playerAnimator.SetTrigger("KickFinisher");
