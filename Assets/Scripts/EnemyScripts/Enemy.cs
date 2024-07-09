@@ -29,7 +29,7 @@ public class Enemy : MonoBehaviour
     public Transform[] patrolPoints;
     private int currentPatrolIndex = 0;
     public bool IsEnemyAlerted{ get;}
-    private float attackDelay = 0.5f;
+    private float attackDelay = 0.65f;
     string SLASH_ANIMATION = "Slash";
     string SLASH_ANIMATION_2 = "ShieldSlash";
     bool hasPlayerSeen = false;
