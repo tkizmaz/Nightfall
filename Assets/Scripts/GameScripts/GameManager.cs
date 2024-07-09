@@ -8,6 +8,9 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private GameObject player;    
     public int initialPotionCount = 3;
+    [SerializeField]
+    private List<GameObject> enemyList = new List<GameObject>();
+    public List<GameObject> EnemyList { get => enemyList ;}
     private void Awake() 
     {
         if(instance == null)
@@ -19,16 +22,9 @@ public class GameManager : MonoBehaviour
             Destroy(this.gameObject);
         }
     }
-
-    void Start()
-    {
-    }
-
-    // Update is called once per frame
     void Update()
     {
         CheckForReopenTheScene();
-    
     }
 
     void CheckForReopenTheScene()

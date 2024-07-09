@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class DarkVision : Ability
 {
+    private float darkVisionDuration = 10f;
     private void Awake() 
     {
         abilityType = AbilityType.DarkVision;
@@ -32,17 +33,17 @@ public class DarkVision : Ability
     
     public IEnumerator ChangeShaders()
     {
-        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        List<GameObject> enemies = GameManager.instance.EnemyList;
         foreach(GameObject enemy in enemies)
         {
-            CubeController cubeController = enemy.GetComponent<CubeController>();
-            cubeController.ChangeToSilhouette();
+            ShaderController shaderController = enemy.GetComponent<ShaderController>();
+            shaderController.ChangeToSilhouette();
         }
-        yield return new WaitForSeconds(10f);
+        yield return new WaitForSeconds(darkVisionDuration);
         foreach(GameObject enemy in enemies)
         {
-            CubeController cubeController = enemy.GetComponent<CubeController>();
-            cubeController.ChangeToDefault();
+            ShaderController shaderController = enemy.GetComponent<ShaderController>();
+            shaderController.ChangeToDefault();
         }
     }
 }
