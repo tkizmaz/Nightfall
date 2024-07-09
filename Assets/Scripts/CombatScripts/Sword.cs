@@ -40,6 +40,7 @@ public class Sword : MonoBehaviour
         {
             AudioManager.instance.PlaySwordHitEnemySfx();
             CombatManager.instance.DealDamage(other.gameObject.GetComponent<Enemy>(), 30);
+            swordCollider.enabled = false;
         }
     }
 
