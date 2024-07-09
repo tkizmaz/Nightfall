@@ -2,6 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum HealthState
+{
+    Alive,
+    Dead,
+    Critical
+}
+
 public class Player : MonoBehaviour
 {
     private Health health;
@@ -17,6 +24,9 @@ public class Player : MonoBehaviour
     private BendTime bendTime;
     private DarkVision darkVision;
     private Dictionary<KeyCode, Ability> abilityDict = new Dictionary<KeyCode, Ability>();
+    private HealthState healthState;
+    public HealthState HealthState => healthState;
+    private PlayerAnimationController playerAnimationController;
 
     public Health Health
     {
@@ -39,12 +49,16 @@ public class Player : MonoBehaviour
 
     private void Start() 
     {
+        playerAnimationController = this.gameObject.GetComponent<PlayerAnimationController>();
+        healthState = HealthState.Alive;
         GameObject gameController = GameObject.FindWithTag("GameController");
         GameUI gameUI = gameController.GetComponent<GameUI>();
         if(gameUI != null)
         {
             health.onStatChanged.AddListener(gameUI.ChangeStatText);
             mana.onStatChanged.AddListener(gameUI.ChangeStatText);
+            health.onStatFinished.AddListener(this.OnDeath);
+            health.onStatFinished.AddListener(playerAnimationController.PlayDeathAnimation);
         }
     }
 
@@ -121,6 +135,11 @@ public class Player : MonoBehaviour
                 }
             }
         }
+    }
+
+    private void OnDeath()
+    {
+        healthState = HealthState.Dead;
     }
     
 }

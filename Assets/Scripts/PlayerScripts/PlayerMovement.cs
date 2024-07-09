@@ -69,7 +69,7 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-        if(movementState == MovementState.Mobile)
+        if(movementState == MovementState.Mobile && this.gameObject.GetComponent<Player>().HealthState == HealthState.Alive)
         {
             float x = Input.GetAxis("Horizontal");
             float z = Input.GetAxis("Vertical");

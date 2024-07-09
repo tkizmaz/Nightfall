@@ -62,4 +62,9 @@ public class PlayerAnimationController : MonoBehaviour
         AudioManager.instance.PlaySwordHitEnemySfx();
     }
 
+    public void PlayDeathAnimation()
+    {
+        playerAnimator.SetTrigger("Death");
+    }
+
 }
