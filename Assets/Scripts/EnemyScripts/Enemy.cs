@@ -11,7 +11,8 @@ public enum EnemyState
     Patrol,
     Chase,
     Attack,
-    Dead
+    Dead,
+    Stunned
 }
 
 public class Enemy : MonoBehaviour
@@ -28,7 +29,7 @@ public class Enemy : MonoBehaviour
     public Transform[] patrolPoints;
     private int currentPatrolIndex = 0;
     public bool IsEnemyAlerted{ get;}
-    private float attackDelay = 0.25f;
+    private float attackDelay = 0.5f;
     string SLASH_ANIMATION = "Slash";
     string SLASH_ANIMATION_2 = "ShieldSlash";
     bool hasPlayerSeen = false;
@@ -55,7 +56,7 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
-        if(enemyState != EnemyState.Dead && player.gameObject.GetComponent<Player>().HealthState == HealthState.Alive)
+        if(enemyState != EnemyState.Dead && player.gameObject.GetComponent<Player>().HealthState == HealthState.Alive && enemyState != EnemyState.Stunned)
         {
             CheckPlayerInSight();
             CheckIfPlayerDisappeared();
@@ -183,6 +184,7 @@ public class Enemy : MonoBehaviour
         enemyState = EnemyState.Dead;
         navMeshAgent.isStopped = true;
         enemyBody.isKinematic = true;
+        enemySword.SetSwordCollider(false);
     }
 
     private IEnumerator SetEnemyToAttackState()
@@ -227,5 +229,30 @@ public class Enemy : MonoBehaviour
     {
         SetStateToDeath();
         enemyAnimator.SetTrigger("KickFinisher");
+    }
+
+    public void OnTakeDamage()
+    {
+        StartCoroutine(ApplyStunnedState());
+    }
+
+    private IEnumerator ApplyStunnedState()
+    {
+        if(enemyState == EnemyState.Attack)
+        {
+            StopCoroutine(SetEnemyToAttackState());
+            enemySword.SetSwordCollider(false);
+            enemyState = EnemyState.Stunned;
+            enemyAnimator.SetTrigger("Impact");
+            navMeshAgent.isStopped = true;
+            yield return new WaitUntil(() => enemyState != EnemyState.Stunned);
+            navMeshAgent.isStopped = false;
+        }
+
+    }
+
+    public void SetStunnedStateFinished()
+    {
+        enemyState = EnemyState.Idle;
     }
 }

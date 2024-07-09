@@ -25,6 +25,7 @@ public class CombatManager : MonoBehaviour
     public void DealDamage(Enemy enemy, int damage)
     {
         enemy.Health.StatValue -= damage;
+        enemy.OnTakeDamage();
     }
 
     public void DealDamageToPlayer(int damage)
