@@ -54,11 +54,15 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
-        if(enemyState != EnemyState.Dead)
+        if(enemyState != EnemyState.Dead && player.gameObject.GetComponent<Player>().HealthState == HealthState.Alive)
         {
             CheckPlayerInSight();
             CheckIfPlayerDisappeared();
             CheckPatrolDestinationReached();
+        }
+        else if(enemyState != EnemyState.Dead && player.gameObject.GetComponent<Player>().HealthState == HealthState.Dead && enemyState != EnemyState.Patrol)
+        {
+            enemyState = EnemyState.Patrol;
         }
     }
 
