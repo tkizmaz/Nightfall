@@ -48,6 +48,8 @@ public class PlayerMovement : MonoBehaviour
     private float groundDistance = 0.4f;
     [SerializeField]
     private LayerMask groundMask;
+    [SerializeField]
+    private LayerMask obstacleMask;
     private bool isGrounded;
     public PlayerWalkingEvent onPlayerWalk;
     public PlayerSprintEvent onPlayerSprint;
@@ -59,7 +61,7 @@ public class PlayerMovement : MonoBehaviour
     
     void Update()
     {
-        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask) || Physics.CheckSphere(groundCheck.position, groundDistance, obstacleMask);
         if(isGrounded && velocity.y < 0)
         {
             velocity.y = -2f;
