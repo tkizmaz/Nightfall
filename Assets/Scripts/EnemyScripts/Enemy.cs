@@ -35,19 +35,19 @@ public class Enemy : MonoBehaviour
     private bool isAttackFinished = false;
     [SerializeField]
     private EnemySword enemySword;
-    private EnemySoundManager enemySoundManager;
+    private Rigidbody enemyBody;
 
     public EnemyState EnemyState => enemyState;
 
     private void Awake() 
     {
         health = this.gameObject.AddComponent<Health>();
-        health.onStatFinished.AddListener(SetStateToDeath);
+        health.onStatFinished.AddListener(KillBySwordFight);
+        enemyBody = this.GetComponent<Rigidbody>();
     }
 
     void Start()
     {
-        enemySoundManager = GetComponent<EnemySoundManager>();
         navMeshAgent = GetComponent<NavMeshAgent>();
         enemyAnimator = GetComponent<Animator>();
         SetEnemyPatrol();
@@ -172,12 +172,17 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    private void KillBySwordFight()
+    {
+        SetStateToDeath();
+        enemyAnimator.SetTrigger("Death");    
+    }
+
     public void SetStateToDeath()
     {
         enemyState = EnemyState.Dead;
         navMeshAgent.isStopped = true;
-        enemyAnimator.SetTrigger("Death");
-        this.GetComponent<Rigidbody>().isKinematic = true;
+        enemyBody.isKinematic = true;
     }
 
     private IEnumerator SetEnemyToAttackState()
@@ -220,9 +225,7 @@ public class Enemy : MonoBehaviour
 
     public void PlayKickFinisherEnemy()
     {
-        enemyState = EnemyState.Dead;
-        navMeshAgent.isStopped = true;
+        SetStateToDeath();
         enemyAnimator.SetTrigger("KickFinisher");
-        this.GetComponent<Rigidbody>().isKinematic = true;
     }
 }
