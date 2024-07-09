@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Animations.Rigging;
 
 public enum EnemyState
 {
@@ -174,8 +175,9 @@ public class Enemy : MonoBehaviour
     public void SetStateToDeath()
     {
         enemyState = EnemyState.Dead;
-        navMeshAgent.enabled = false;
+        navMeshAgent.isStopped = true;
         enemyAnimator.SetTrigger("Death");
+        this.GetComponent<Rigidbody>().isKinematic = true;
     }
 
     private IEnumerator SetEnemyToAttackState()
@@ -221,5 +223,6 @@ public class Enemy : MonoBehaviour
         enemyState = EnemyState.Dead;
         navMeshAgent.isStopped = true;
         enemyAnimator.SetTrigger("KickFinisher");
+        this.GetComponent<Rigidbody>().isKinematic = true;
     }
 }
