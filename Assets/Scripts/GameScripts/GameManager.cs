@@ -27,5 +27,19 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        CheckForReopenTheScene();
+    
+    }
+
+    void CheckForReopenTheScene()
+    {
+        if(Input.GetKeyDown(KeyCode.P))
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene(0);
+        }
+        else if(Input.GetKeyDown(KeyCode.L))
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene(1);
+        }
     }
 }
