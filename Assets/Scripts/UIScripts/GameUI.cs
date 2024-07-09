@@ -26,6 +26,12 @@ public class GameUI : MonoBehaviour
     [SerializeField]
     private Image manaSlider;
     private Dictionary<AbilityType, Image> abilityIconDict = new Dictionary<AbilityType, Image>();
+    [SerializeField]
+    private GameObject settingsPanel;
+    [SerializeField]
+    private Slider sensitivitySlider;
+    private bool isSettingsPanelActive;
+    private CameraController cameraController;
 
     public void ChangePotionCount(StatType statType, int potionCount)
     {
@@ -54,6 +60,7 @@ public class GameUI : MonoBehaviour
 
     private void Start() 
     {
+        SetSensitivitySlider();
         healthSlider.fillAmount = 1;
         manaSlider.fillAmount = 1;
         healtPotionCountText.text = GameManager.instance.initialPotionCount.ToString();
@@ -61,5 +68,38 @@ public class GameUI : MonoBehaviour
         abilityIconDict.Add(AbilityType.Blink, blinkIcon);
         abilityIconDict.Add(AbilityType.BendTime, bendTimeIcon);
         abilityIconDict.Add(AbilityType.DarkVision, darkVisionIcon);
+    }
+
+    private void Update() 
+    {
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            isSettingsPanelActive = !isSettingsPanelActive;
+            settingsPanel.SetActive(isSettingsPanelActive);
+            if(isSettingsPanelActive)
+            {
+                Time.timeScale = 0;
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+            }
+            else
+            {
+                Time.timeScale = 1;
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+            }
+        }
+    }
+
+    private void SetSensitivitySlider()
+    {
+        cameraController = player.GetComponentInChildren<CameraController>();
+        sensitivitySlider.value = cameraController.sensitivity;
+        settingsPanel.SetActive(false);
+    }
+
+    public void ChangeSensitivity()
+    {
+        cameraController.sensitivity = sensitivitySlider.value;
     }
 }
