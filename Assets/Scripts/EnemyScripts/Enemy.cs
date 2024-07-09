@@ -37,7 +37,6 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     private EnemySword enemySword;
     private Rigidbody enemyBody;
-
     public EnemyState EnemyState => enemyState;
 
     private void Awake() 
@@ -247,6 +246,10 @@ public class Enemy : MonoBehaviour
             navMeshAgent.isStopped = true;
             yield return new WaitUntil(() => enemyState != EnemyState.Stunned);
             navMeshAgent.isStopped = false;
+        }
+        else
+        {
+            enemyAnimator.SetTrigger("Impact");
         }
 
     }
