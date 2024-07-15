@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Pistol : Weapon
 {
-    // Start is called before the first frame update
+    [SerializeField]
+    private Transform pistolTip;
     void Start()
     {
         weaponType = WeaponType.Pistol;
@@ -12,8 +13,9 @@ public class Pistol : Weapon
 
     public override void PerformAttack()
     {
+        //playerAnimationController.PlayShootAnimation();
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.forward, out hit, 20))
+        if (Physics.Raycast(pistolTip.transform.position, pistolTip.transform.forward, out hit, 20))
         {
             Debug.DrawRay(transform.position, transform.forward * hit.distance, Color.red, 1f);
             Debug.Log("Hit: " + hit.transform.name);
