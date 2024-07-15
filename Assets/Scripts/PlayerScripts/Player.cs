@@ -27,6 +27,11 @@ public class Player : MonoBehaviour
     private HealthState healthState;
     public HealthState HealthState => healthState;
     private PlayerAnimationController playerAnimationController;
+    [SerializeField]
+    private Weapon sword;
+    [SerializeField]
+    private Weapon pistol;
+    private Weapon selectedWeapon;
 
     public Health Health
     {
@@ -49,6 +54,7 @@ public class Player : MonoBehaviour
 
     private void Start() 
     {
+        selectedWeapon = sword;
         playerAnimationController = this.gameObject.GetComponent<PlayerAnimationController>();
         healthState = HealthState.Alive;
         GameObject gameController = GameObject.FindWithTag("GameController");
@@ -111,6 +117,7 @@ public class Player : MonoBehaviour
     {
         CheckPotionUse();    
         CheckAbilitySelection();
+        CheckAttack();
     }
 
     public int GetPotionCount(StatType statType)
@@ -140,6 +147,18 @@ public class Player : MonoBehaviour
     private void OnDeath()
     {
         healthState = HealthState.Dead;
+    }
+
+    private void CheckAttack()
+    {
+        if(Input.GetMouseButtonDown(0))
+        {
+            sword.PerformAttack();
+        }
+        if(Input.GetMouseButtonDown(1))
+        {
+            pistol.PerformAttack();
+        }
     }
     
 }

@@ -9,17 +9,17 @@ enum SwordState
     Attacking
 }
 
-public class Sword : MonoBehaviour
+public class Sword : Weapon
 {
     private BoxCollider swordCollider;
     public UnityEvent onPlayerSlash;
-    public PlayerAnimationController playerAnimationController;
     private float finisherRange = 1f;
     private SwordState swordState;
 
     // Start is called before the first frame update
     void Start()
     {
+        weaponType = WeaponType.Sword;
         swordState = SwordState.Idle;
         swordCollider = this.gameObject.GetComponent<BoxCollider>();
         swordCollider.enabled = false;
@@ -27,11 +27,6 @@ public class Sword : MonoBehaviour
         {
             onPlayerSlash.AddListener(playerAnimationController.PlaySlashAnimation);
         }
-    }
-
-    private void Update() 
-    {
-        CheckAttack();
     }
 
     private void OnTriggerEnter(Collider other) 
@@ -57,9 +52,10 @@ public class Sword : MonoBehaviour
         swordState = SwordState.Idle;
     }
 
-    private void CheckAttack()
+    public override void PerformAttack()
     {
-        if (Input.GetMouseButtonDown(0) && swordState == SwordState.Idle)
+        Debug.Log("Sword Attack");
+        if (swordState == SwordState.Idle)
         {
             RaycastHit hit;
             Vector3 rayOrigin = Camera.main.transform.position;
