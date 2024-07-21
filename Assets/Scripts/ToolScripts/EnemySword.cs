@@ -2,11 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemySword : MonoBehaviour
+public class EnemySword : EnemyWeapon
 {
     private BoxCollider swordCollider;
-    [SerializeField]
-    private EnemySoundManager enemySoundManager;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -24,7 +23,8 @@ public class EnemySword : MonoBehaviour
         }
     }
 
-    public void SetSwordCollider(bool value)
+
+    public override void DeactivateWeapon(bool value)
     {
         swordCollider.enabled = value;
     }
