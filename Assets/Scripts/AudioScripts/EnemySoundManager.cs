@@ -15,6 +15,8 @@ public class EnemySoundManager : MonoBehaviour
     private AudioClip deathSound;
     [SerializeField]
     private AudioClip painSound;
+    [SerializeField]
+    private AudioClip pistolShootSound;
 
     private void Awake() 
     {
@@ -48,6 +50,12 @@ public class EnemySoundManager : MonoBehaviour
     public void PlayPainSfx()
     {
         sfxSource.clip = painSound;
+        sfxSource.Play();
+    }
+
+    public void PlayPistolShootSound()
+    {
+        sfxSource.clip = pistolShootSound;
         sfxSource.Play();
     }
 }

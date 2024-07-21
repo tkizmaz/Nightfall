@@ -1,0 +1,99 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &3906959387456021245
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 325218128595186526, guid: e1233715cbcea439c913f378b2e98776, type: 3}
+      propertyPath: m_BaseOffset
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 513792028851434135, guid: e1233715cbcea439c913f378b2e98776, type: 3}
+      propertyPath: painSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 6f2364b25917a4ab4b34587e58632ec5, type: 3}
+    - target: {fileID: 699147698307419955, guid: e1233715cbcea439c913f378b2e98776, type: 3}
+      propertyPath: patrolPoints.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8406242087382442044, guid: e1233715cbcea439c913f378b2e98776, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -18.29
+      objectReference: {fileID: 0}
+    - target: {fileID: 8406242087382442044, guid: e1233715cbcea439c913f378b2e98776, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 6.001
+      objectReference: {fileID: 0}
+    - target: {fileID: 8406242087382442044, guid: e1233715cbcea439c913f378b2e98776, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -57.17
+      objectReference: {fileID: 0}
+    - target: {fileID: 8406242087382442044, guid: e1233715cbcea439c913f378b2e98776, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.6998234
+      objectReference: {fileID: 0}
+    - target: {fileID: 8406242087382442044, guid: e1233715cbcea439c913f378b2e98776, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8406242087382442044, guid: e1233715cbcea439c913f378b2e98776, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.71431595
+      objectReference: {fileID: 0}
+    - target: {fileID: 8406242087382442044, guid: e1233715cbcea439c913f378b2e98776, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8406242087382442044, guid: e1233715cbcea439c913f378b2e98776, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8406242087382442044, guid: e1233715cbcea439c913f378b2e98776, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 268.826
+      objectReference: {fileID: 0}
+    - target: {fileID: 8406242087382442044, guid: e1233715cbcea439c913f378b2e98776, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9215253309314448006, guid: e1233715cbcea439c913f378b2e98776, type: 3}
+      propertyPath: m_Name
+      value: RangedKnight Variant
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 9215253309314448006, guid: e1233715cbcea439c913f378b2e98776, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 413693763909735998}
+  m_SourcePrefab: {fileID: 100100000, guid: e1233715cbcea439c913f378b2e98776, type: 3}
+--- !u!1 &5321960443674073211 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9215253309314448006, guid: e1233715cbcea439c913f378b2e98776, type: 3}
+  m_PrefabInstance: {fileID: 3906959387456021245}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &413693763909735998
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5321960443674073211}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2d94464a91b946fe9767ef0b26d51e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  visionRange: 10
+  visionAngle: 60
+  obstacleMask:
+    serializedVersion: 2
+    m_Bits: 0
+  player: {fileID: 0}
+  patrolPoints: []
+  enemyWeapon: {fileID: 0}
