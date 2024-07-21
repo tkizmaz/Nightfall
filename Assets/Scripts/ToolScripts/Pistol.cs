@@ -11,9 +11,15 @@ public class Pistol : Weapon
         weaponType = WeaponType.Pistol;
     }
 
+    public override void ActivateWeapon()
+    {
+        Debug.Log("Pistol Activated");
+        base.ActivateWeapon();
+    }
+
     public override void PerformAttack()
     {
-        //playerAnimationController.PlayShootAnimation();
+        playerAnimationController.PlayShootAnimation();
         RaycastHit hit;
         if (Physics.Raycast(pistolTip.transform.position, pistolTip.transform.forward, out hit, 20))
         {
@@ -21,6 +27,7 @@ public class Pistol : Weapon
             Debug.Log("Hit: " + hit.transform.name);
             if (hit.transform.CompareTag("Enemy"))
             {
+                Debug.Log("Enemy Hit");
                 CombatManager.instance.DealDamage(hit.transform.GetComponent<Enemy>(), 10);
             }
         }
