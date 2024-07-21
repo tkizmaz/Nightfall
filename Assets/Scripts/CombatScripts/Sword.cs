@@ -39,6 +39,12 @@ public class Sword : Weapon
         }
     }
 
+    public override void ActivateWeapon()
+    {
+        Debug.Log("Sword Activated");
+        base.ActivateWeapon();
+    }
+
     private IEnumerator AttackRoutine()
     {
         AudioManager.instance.PlaySwordSwingSfx();
