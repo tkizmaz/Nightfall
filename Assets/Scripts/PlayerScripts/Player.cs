@@ -117,6 +117,7 @@ public class Player : MonoBehaviour
     {
         CheckPotionUse();    
         CheckAbilitySelection();
+        CheckWeaponChange();
         CheckAttack();
     }
 
@@ -149,16 +150,29 @@ public class Player : MonoBehaviour
         healthState = HealthState.Dead;
     }
 
+    private void CheckWeaponChange()
+    {
+        if(Input.GetKeyDown(KeyCode.X))
+        {
+            if(selectedWeapon == sword)
+            {
+                sword.DeactivateWeapon();
+                selectedWeapon = pistol;
+            }
+            else
+            {
+                pistol.DeactivateWeapon();
+                selectedWeapon = sword;
+            }
+            selectedWeapon.ActivateWeapon();
+        }
+    }
+
     private void CheckAttack()
     {
         if(Input.GetMouseButtonDown(0))
         {
-            sword.PerformAttack();
-        }
-        if(Input.GetMouseButtonDown(1))
-        {
-            pistol.PerformAttack();
+            selectedWeapon.PerformAttack();
         }
     }
-    
 }
