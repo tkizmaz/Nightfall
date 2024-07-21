@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Animations.Rigging;
@@ -24,36 +25,35 @@ public class Enemy : MonoBehaviour
     public float visionAngle = 60.0f;
     public LayerMask obstacleMask;
     public Transform player;
-    private NavMeshAgent navMeshAgent;
+    protected NavMeshAgent navMeshAgent;
     private Animator enemyAnimator;
     public Transform[] patrolPoints;
     private int currentPatrolIndex = 0;
     public bool IsEnemyAlerted{ get;}
-    private float attackDelay = 0.65f;
-    string SLASH_ANIMATION = "Slash";
-    string SLASH_ANIMATION_2 = "ShieldSlash";
     bool hasPlayerSeen = false;
     private bool isAttackFinished = false;
-    [SerializeField]
-    private EnemySword enemySword;
     private Rigidbody enemyBody;
     public EnemyState EnemyState => enemyState;
+    [SerializeField]
+    protected EnemyWeapon enemyWeapon;
+    private float attackDelay = 0.65f;
+    protected float attackRange;
 
-    private void Awake() 
+    protected void Awake() 
     {
         health = this.gameObject.AddComponent<Health>();
         health.onStatFinished.AddListener(KillBySwordFight);
         enemyBody = this.GetComponent<Rigidbody>();
     }
 
-    void Start()
+    protected void Start()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
         enemyAnimator = GetComponent<Animator>();
         SetEnemyPatrol();
     }
 
-    void Update()
+    protected void Update()
     {
         if(enemyState != EnemyState.Dead && player.gameObject.GetComponent<Player>().HealthState == HealthState.Alive && enemyState != EnemyState.Stunned)
         {
@@ -84,7 +84,8 @@ public class Enemy : MonoBehaviour
                     {
                         CheckForPlayerSeen();
                     }
-                    bool isPlayerInAttackRange = distanceToPlayer <= 3.0f;
+
+                    bool isPlayerInAttackRange = distanceToPlayer <= attackRange;
                     if(isPlayerInAttackRange)
                     {
                         if(enemyState != EnemyState.Attack)
@@ -119,12 +120,11 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    private void SetEnemyToChasingState()
+    protected virtual void SetEnemyToChasingState()
     {
         enemyState = EnemyState.Chase;
         enemyAnimator.SetBool("isRunning", true);
         navMeshAgent.speed = 4f;
-        navMeshAgent.stoppingDistance = 3.0f;
     }
 
     void CheckIfPlayerDisappeared()
@@ -183,24 +183,23 @@ public class Enemy : MonoBehaviour
         enemyState = EnemyState.Dead;
         navMeshAgent.isStopped = true;
         enemyBody.isKinematic = true;
-        enemySword.SetSwordCollider(false);
+        //enemySword.SetSwordCollider(false);
     }
 
-    private IEnumerator SetEnemyToAttackState()
+    protected virtual IEnumerator SetEnemyToAttackState()
     {
         navMeshAgent.isStopped = true;
         while (enemyState == EnemyState.Attack)
         {
-            int randomSlash = Random.Range(0, 2);
-            string slashAnimation = randomSlash == 0 ? SLASH_ANIMATION : SLASH_ANIMATION_2;
+            string animation = SelectAttackAnimation();
             enemyAnimator.SetBool("onStance", true);
 
             isAttackFinished = false;
-            enemyAnimator.SetTrigger(slashAnimation);
-            enemySword.SetSwordCollider(true);
+            enemyAnimator.SetTrigger(animation);
+            enemyWeapon.DeactivateWeapon(true);
 
             yield return new WaitUntil(() => isAttackFinished);
-            enemySword.SetSwordCollider(false);
+            enemyWeapon.DeactivateWeapon(false);
 
             if(enemyState != EnemyState.Attack)
             {
@@ -240,7 +239,7 @@ public class Enemy : MonoBehaviour
         if(enemyState == EnemyState.Attack)
         {
             StopCoroutine(SetEnemyToAttackState());
-            enemySword.SetSwordCollider(false);
+            enemyWeapon.DeactivateWeapon(false);
             enemyState = EnemyState.Stunned;
             enemyAnimator.SetTrigger("Impact");
             navMeshAgent.isStopped = true;
@@ -257,5 +256,10 @@ public class Enemy : MonoBehaviour
     public void SetStunnedStateFinished()
     {
         enemyState = EnemyState.Idle;
+    }
+
+    protected virtual string SelectAttackAnimation()
+    {
+        return "";
     }
 }
