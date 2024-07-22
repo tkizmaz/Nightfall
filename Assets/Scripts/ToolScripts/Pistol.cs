@@ -24,10 +24,8 @@ public class Pistol : Weapon
         if (Physics.Raycast(pistolTip.transform.position, pistolTip.transform.forward, out hit, 20))
         {
             Debug.DrawRay(transform.position, transform.forward * hit.distance, Color.red, 1f);
-            Debug.Log("Hit: " + hit.transform.name);
             if (hit.transform.CompareTag("Enemy"))
             {
-                Debug.Log("Enemy Hit");
                 CombatManager.instance.DealDamage(hit.transform.GetComponent<Enemy>(), 10);
             }
         }
