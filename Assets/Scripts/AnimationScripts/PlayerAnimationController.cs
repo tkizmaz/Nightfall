@@ -69,6 +69,6 @@ public class PlayerAnimationController : MonoBehaviour
 
     public void PlayShootAnimation()
     {
-        playerAnimator.SetTrigger("Gunshot");
+        playerAnimator.SetTrigger("Shooting");
     }
 }
