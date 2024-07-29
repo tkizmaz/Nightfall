@@ -14,6 +14,10 @@ public class GameUI : MonoBehaviour
     [SerializeField]
     private TMPro.TMP_Text manaPotionCountText;
     [SerializeField]
+    private TMPro.TMP_Text countdownText;
+    [SerializeField]
+    private TMPro.TMP_Text remainingEnemiesText;
+    [SerializeField]
     private GameObject player;
     [SerializeField]
     private Image blinkIcon;
@@ -26,6 +30,8 @@ public class GameUI : MonoBehaviour
     [SerializeField]
     private Image manaSlider;
     private Dictionary<AbilityType, Image> abilityIconDict = new Dictionary<AbilityType, Image>();
+    [SerializeField]
+    private GameObject gameOverPanel;
     [SerializeField]
     private GameObject settingsPanel;
     [SerializeField]
@@ -102,4 +108,29 @@ public class GameUI : MonoBehaviour
     {
         cameraController.sensitivity = sensitivitySlider.value;
     }
+
+    public void UpdateTimerText(float timeRemaining)
+    {
+        int minutes = Mathf.FloorToInt(timeRemaining / 60);
+        int seconds = Mathf.FloorToInt(timeRemaining % 60);
+        countdownText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+    }
+
+    public void UpdateRemainingEnemiesText(int remainingEnemies)
+    {
+        remainingEnemiesText.text = "Remaining Enemies: " + remainingEnemies.ToString();
+    }
+
+    public void ActivateGameOverPanel(bool isWin)
+    {
+        gameOverPanel.SetActive(true);
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        TMPro.TMP_Text gameOverText = gameOverPanel.GetComponentInChildren<TMPro.TMP_Text>();
+        gameOverText.text = isWin ? "You Win!" : "You Lose!";
+
+        TMPro.TMP_Text gameOverButtonText = gameOverPanel.GetComponentsInChildren<TMPro.TMP_Text>()[1];
+        gameOverButtonText.text = isWin ? "Play Again" : "Retry";
+    }
+
 }
