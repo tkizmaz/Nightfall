@@ -176,6 +176,7 @@ public class Enemy : MonoBehaviour
     {
         SetStateToDeath();
         enemyAnimator.SetTrigger("Death");    
+        GameManager.instance.OnEnemyDeath(this.gameObject);
     }
 
     public void SetStateToDeath()
@@ -227,6 +228,7 @@ public class Enemy : MonoBehaviour
     {
         SetStateToDeath();
         enemyAnimator.SetTrigger("KickFinisher");
+        GameManager.instance.OnEnemyDeath(this.gameObject);
     }
 
     public void OnTakeDamage()
