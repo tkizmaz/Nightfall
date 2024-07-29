@@ -24,6 +24,8 @@ public class PlayerSoundManager : MonoBehaviour
     private AudioClip darkVisionSound;
     [SerializeField]
     private AudioClip deathSound;
+    [SerializeField]
+    private AudioClip pistolShootSound;
     private Dictionary<AbilityType, AudioClip> abilitySounds = new Dictionary<AbilityType, AudioClip>();
 
     private void Awake() 
@@ -76,6 +78,12 @@ public class PlayerSoundManager : MonoBehaviour
     public void PlayDeathSfx()
     {
         sfxSource.clip = deathSound;
+        sfxSource.Play();
+    }
+
+    public void PlayPistolShootSound()
+    {
+        sfxSource.clip = pistolShootSound;
         sfxSource.Play();
     }
 

@@ -13,20 +13,22 @@ public class Pistol : Weapon
 
     public override void ActivateWeapon()
     {
-        Debug.Log("Pistol Activated");
         base.ActivateWeapon();
     }
 
     public override void PerformAttack()
     {
         playerAnimationController.PlayShootAnimation();
+    }
+
+    public void Shoot()
+    {
         RaycastHit hit;
-        if (Physics.Raycast(pistolTip.transform.position, pistolTip.transform.forward, out hit, 20))
+        if (Physics.Raycast(pistolTip.position, pistolTip.forward, out hit, 100))
         {
-            Debug.DrawRay(transform.position, transform.forward * hit.distance, Color.red, 1f);
-            if (hit.transform.CompareTag("Enemy"))
+            if (hit.transform.gameObject.CompareTag("Enemy"))
             {
-                CombatManager.instance.DealDamage(hit.transform.GetComponent<Enemy>(), 10);
+                CombatManager.instance.DealDamage(hit.transform.gameObject.GetComponent<Enemy>(), 25);
             }
         }
     }

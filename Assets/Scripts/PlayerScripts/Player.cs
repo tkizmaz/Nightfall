@@ -148,6 +148,7 @@ public class Player : MonoBehaviour
     private void OnDeath()
     {
         healthState = HealthState.Dead;
+        GameManager.instance.OnPlayerDeath();
     }
 
     private void CheckWeaponChange()
@@ -174,5 +175,10 @@ public class Player : MonoBehaviour
         {
             selectedWeapon.PerformAttack();
         }
+    }
+
+    public void Shoot()
+    {
+        ((Pistol)selectedWeapon).Shoot();
     }
 }
