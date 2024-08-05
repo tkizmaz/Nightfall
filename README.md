@@ -29,6 +29,10 @@ This game was developed using Unity 3D. Animations were sourced from Mixamo, and
   - **Q**: Peek left
   - **E**: Peek right
   - **1, 2, 3**: Select abilities
+ 
+## Video Demo
+
+[Watch the gameplay video](https://streamable.com/lyf681)
 
 ## Credits
 
