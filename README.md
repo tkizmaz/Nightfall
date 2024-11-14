@@ -37,7 +37,7 @@ This game was developed using Unity 3D. Animations were sourced from Mixamo, and
 ## Credits
 
 - **Developer**: Taha Kizmaz
-- **Supervisoer**: Paul Newbury
+- **Supervisor**: Dr. Paul Newbury
 - **Animations**: Mixamo
 - **Sound Files**: Royalty-free sources
 
